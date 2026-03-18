@@ -1,0 +1,36 @@
+# Dependencies
+app/node_modules/
+
+# Build output
+app/dist/
+
+# IDE
+.idea/
+.vscode/
+*.sw?
+.DS_Store
+
+# Environment
+.env
+.env.local
+
+# Claude context layer
+.claude/context-layer/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Downloaded data (large files)
+cb_2020_us_zcta520_500k.*
+
+# Excel duplicates of CSV data (keep CSVs)
+*.XLSX
+
+# Brand guidelines PDF (too large for git)
+*.pdf
+
+# Logs
+*.log
+npm-debug.log*

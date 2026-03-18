@@ -1,0 +1,66 @@
+{
+  "indicators": {
+    "lifeExpectancy": {
+      "min": 75.26,
+      "max": 86.85,
+      "avg": 79.86,
+      "median": 79.87,
+      "p25": 78.15,
+      "p75": 81.7,
+      "unit": "years",
+      "higherIsBetter": true
+    },
+    "povertyRate": {
+      "min": 1.8,
+      "max": 55.4,
+      "avg": 10.18,
+      "median": 8.6,
+      "p25": 5.1,
+      "p75": 12.7,
+      "unit": "%",
+      "higherIsBetter": false
+    },
+    "uninsuredRate": {
+      "min": 0.0,
+      "max": 27.5,
+      "avg": 11.72,
+      "median": 10.5,
+      "p25": 6.65,
+      "p75": 15.97,
+      "unit": "%",
+      "higherIsBetter": false
+    },
+    "diabetes": {
+      "min": 3.6,
+      "max": 16.2,
+      "avg": 9.2,
+      "median": 9.05,
+      "p25": 7.8,
+      "p75": 10.0,
+      "unit": "%",
+      "higherIsBetter": false
+    },
+    "hypertension": {
+      "min": 15.0,
+      "max": 39.7,
+      "avg": 27.13,
+      "median": 26.65,
+      "p25": 25.12,
+      "p75": 28.5,
+      "unit": "%",
+      "higherIsBetter": false
+    },
+    "obesity": {
+      "min": 25.4,
+      "max": 42.0,
+      "avg": 31.25,
+      "median": 31.15,
+      "p25": 27.95,
+      "p75": 33.98,
+      "unit": "%",
+      "higherIsBetter": false
+    }
+  },
+  "totalZctas": 63,
+  "zctasWithCompleteData": 61
+}

@@ -1,0 +1,80 @@
+@import "tailwindcss";
+@import 'leaflet/dist/leaflet.css';
+
+@theme {
+  /* Official Palette */
+  --color-aph-blue: #44499C;
+  --color-aph-green: #009F4D;
+  --color-aph-white: #f7f6f5;
+
+  /* Supporting Palette */
+  --color-aph-dark-blue: #22254E;
+  --color-aph-dark-green: #005027;
+  --color-aph-complaint-green: #008743;
+  --color-aph-light-blue: #dcf2fd;
+  --color-aph-light-green: #dff0e3;
+
+  /* Extended Palette (data viz) */
+  --color-aph-red: #F83125;
+  --color-aph-orange: #FF8F00;
+  --color-aph-yellow: #FFC600;
+  --color-aph-cyan: #009CDE;
+  --color-aph-purple: #9F3CC9;
+  --color-aph-brown: #8F5201;
+  --color-aph-light-gray: #C6C5C4;
+  --color-aph-dark-gray: #636262;
+
+  /* Typography */
+  --font-geist: 'Geist', 'Helvetica', 'Aptos', sans-serif;
+}
+
+body {
+  font-family: var(--font-geist);
+  background-color: var(--color-aph-white);
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* ---- Explore mode animations ---- */
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+.animate-slide-left {
+  animation: slide-left 0.25s ease-out;
+}
+
+/* Leaflet tooltip theming */
+.zcta-tooltip {
+  background: white !important;
+  border: 1px solid #C6C5C4 !important;
+  border-radius: 8px !important;
+  padding: 6px 10px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+  color: #22254E !important;
+}
+
+.zcta-tooltip::before {
+  border-top-color: white !important;
+}
