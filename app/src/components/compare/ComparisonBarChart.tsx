@@ -71,7 +71,7 @@ export default function ComparisonBarChart({
                 {label}{" "}
                 <span className="font-normal text-aph-dark-gray">({unit})</span>
               </h4>
-              <ResponsiveContainer width="100%" height={180}>
+              <ResponsiveContainer width="100%" height={160}>
                 <BarChart
                   data={chartData}
                   margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
@@ -90,7 +90,7 @@ export default function ComparisonBarChart({
                       fontFamily: "Geist, sans-serif",
                     }}
                     tickFormatter={(v: number) => formatValue(v, unit)}
-                    width={55}
+                    width={45}
                   />
                   <Tooltip
                     contentStyle={{
@@ -129,10 +129,10 @@ export default function ComparisonBarChart({
                     strokeDasharray="6 3"
                     strokeWidth={2}
                     label={{
-                      value: `County Avg: ${formatValue(avg, unit)}`,
+                      value: `Avg: ${formatValue(avg, unit)}`,
                       position: "insideTopRight",
                       style: {
-                        fontSize: 11,
+                        fontSize: 10,
                         fill: APH_COLORS.darkBlue,
                         fontFamily: "Geist, sans-serif",
                         fontWeight: 600,

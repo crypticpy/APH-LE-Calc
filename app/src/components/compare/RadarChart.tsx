@@ -76,56 +76,58 @@ export default function RadarChart({ zctas, colors }: RadarChartProps) {
       <p className="text-sm text-aph-dark-gray mb-4">
         Higher values indicate better health outcomes across all indicators.
       </p>
-      <ResponsiveContainer width="100%" height={380}>
-        <RechartsRadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
-          <PolarGrid stroke={APH_COLORS.lightGray} />
-          <PolarAngleAxis
-            dataKey="indicator"
-            tick={{
-              fontSize: 12,
-              fill: APH_COLORS.darkBlue,
-              fontFamily: "Geist, sans-serif",
-            }}
-          />
-          <PolarRadiusAxis
-            angle={90}
-            domain={[0, 100]}
-            tick={{ fontSize: 10, fill: APH_COLORS.darkGray }}
-            tickCount={5}
-          />
-          {zctas.map((zcta, index) => (
-            <Radar
-              key={zcta}
-              name={zcta}
-              dataKey={zcta}
-              stroke={colors[index]}
-              fill={colors[index]}
-              fillOpacity={0.15}
-              strokeWidth={2}
-              connectNulls
+      <div className="w-full" style={{ height: "min(380px, 60vw)" }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <RechartsRadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
+            <PolarGrid stroke={APH_COLORS.lightGray} />
+            <PolarAngleAxis
+              dataKey="indicator"
+              tick={{
+                fontSize: 11,
+                fill: APH_COLORS.darkBlue,
+                fontFamily: "Geist, sans-serif",
+              }}
             />
-          ))}
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "white",
-              border: `1px solid ${APH_COLORS.lightGray}`,
-              borderRadius: "8px",
-              fontFamily: "Geist, sans-serif",
-              fontSize: "13px",
-            }}
-            formatter={(value: unknown) =>
-              value != null ? `${value}/100` : "N/A"
-            }
-          />
-          <Legend
-            wrapperStyle={{
-              fontFamily: "Geist, sans-serif",
-              fontSize: "13px",
-              color: APH_COLORS.darkBlue,
-            }}
-          />
-        </RechartsRadarChart>
-      </ResponsiveContainer>
+            <PolarRadiusAxis
+              angle={90}
+              domain={[0, 100]}
+              tick={{ fontSize: 10, fill: APH_COLORS.darkGray }}
+              tickCount={5}
+            />
+            {zctas.map((zcta, index) => (
+              <Radar
+                key={zcta}
+                name={zcta}
+                dataKey={zcta}
+                stroke={colors[index]}
+                fill={colors[index]}
+                fillOpacity={0.15}
+                strokeWidth={2}
+                connectNulls
+              />
+            ))}
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "white",
+                border: `1px solid ${APH_COLORS.lightGray}`,
+                borderRadius: "8px",
+                fontFamily: "Geist, sans-serif",
+                fontSize: "13px",
+              }}
+              formatter={(value: unknown) =>
+                value != null ? `${value}/100` : "N/A"
+              }
+            />
+            <Legend
+              wrapperStyle={{
+                fontFamily: "Geist, sans-serif",
+                fontSize: "13px",
+                color: APH_COLORS.darkBlue,
+              }}
+            />
+          </RechartsRadarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }

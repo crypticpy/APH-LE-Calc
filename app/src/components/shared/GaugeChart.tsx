@@ -141,7 +141,7 @@ export default function GaugeChart({
 
   return (
     <div className="flex flex-col items-center p-4 bg-white rounded-xl shadow-sm border border-aph-light-gray/40">
-      <svg viewBox="0 0 200 120" className="w-full max-w-[200px]">
+      <svg viewBox="0 0 200 120" className="w-full">
         {/* Background arc */}
         <path
           d={arcPath(1)}
@@ -260,7 +260,7 @@ export default function GaugeChart({
             >
               info
             </span>
-            <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 w-52 rounded-lg bg-aph-dark-blue text-white text-xs px-3 py-2 leading-snug opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg z-20 text-center">
+            <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 w-44 sm:w-52 rounded-lg bg-aph-dark-blue text-white text-xs px-3 py-2 leading-snug opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg z-20 text-center">
               {tooltipText}
               <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-aph-dark-blue" />
             </span>

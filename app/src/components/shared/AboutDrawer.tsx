@@ -87,7 +87,7 @@ export default function AboutDrawer({ isOpen, onClose }: AboutDrawerProps) {
         role="dialog"
         aria-modal="true"
         aria-label="About Austin Health Pulse"
-        className={`fixed top-0 right-0 h-full w-full max-w-[480px] bg-white shadow-2xl transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 h-full w-full max-w-[480px] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
         style={{ zIndex: 2001 }}
@@ -110,7 +110,7 @@ export default function AboutDrawer({ isOpen, onClose }: AboutDrawerProps) {
         </div>
 
         {/* Content */}
-        <div className="overflow-y-auto h-[calc(100%-72px)] px-6 py-6">
+        <div className="overflow-y-auto flex-1 px-6 py-6">
           {/* About */}
           <Section title="About Austin Health Pulse">
             <p>

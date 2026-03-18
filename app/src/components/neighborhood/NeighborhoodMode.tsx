@@ -363,11 +363,11 @@ export default function NeighborhoodMode() {
       </section>
 
       {/* Input Section */}
-      <section className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4">
+      <section className="flex flex-col items-stretch sm:flex-row sm:items-center sm:justify-center gap-3 mb-4">
         <button
           onClick={handleGeolocate}
           disabled={geoStatus === "locating"}
-          className="p-3 rounded-lg border border-aph-light-gray bg-white text-aph-blue hover:text-aph-green disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-1.5"
+          className="p-3 rounded-lg border border-aph-light-gray bg-white text-aph-blue hover:text-aph-green disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-1.5"
           aria-label="Use my location"
           title="Use my location"
         >
@@ -377,12 +377,14 @@ export default function NeighborhoodMode() {
             my_location
           </span>
           {geoStatus === "locating" && (
-            <span className="text-sm font-medium text-aph-dark-gray">
+            <span className="text-sm font-medium text-aph-dark-gray whitespace-nowrap">
               Locating...
             </span>
           )}
           {geoStatus === "error" && geoError && (
-            <span className="text-sm font-medium text-aph-red">{geoError}</span>
+            <span className="text-sm font-medium text-aph-red whitespace-nowrap">
+              {geoError}
+            </span>
           )}
         </button>
 
@@ -402,7 +404,7 @@ export default function NeighborhoodMode() {
               setNotFound(false);
             }}
             onKeyDown={handleKeyDown}
-            className="pl-10 pr-4 py-3 w-44 rounded-lg border border-aph-light-gray bg-white text-aph-dark-blue font-semibold text-lg focus:outline-none focus:ring-2 focus:ring-aph-blue transition"
+            className="pl-10 pr-4 py-3 w-full sm:w-44 rounded-lg border border-aph-light-gray bg-white text-aph-dark-blue font-semibold text-lg focus:outline-none focus:ring-2 focus:ring-aph-blue transition"
             aria-label="Zip code"
           />
         </div>
@@ -419,7 +421,7 @@ export default function NeighborhoodMode() {
             value={ageInput}
             onChange={(e) => setAgeInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="pl-10 pr-4 py-3 w-48 rounded-lg border border-aph-light-gray bg-white text-aph-dark-blue font-semibold text-lg focus:outline-none focus:ring-2 focus:ring-aph-blue transition [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className="pl-10 pr-4 py-3 w-full sm:w-48 rounded-lg border border-aph-light-gray bg-white text-aph-dark-blue font-semibold text-lg focus:outline-none focus:ring-2 focus:ring-aph-blue transition [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             aria-label="Age (optional)"
           />
         </div>
@@ -427,7 +429,7 @@ export default function NeighborhoodMode() {
         <button
           onClick={() => handleExplore()}
           disabled={!zipIsValid || !ageIsValid}
-          className="px-8 py-3 bg-aph-green text-white font-semibold text-lg rounded-lg hover:brightness-110 active:scale-[0.97] disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center gap-2"
+          className="px-8 py-3 bg-aph-green text-white font-semibold text-lg rounded-lg hover:brightness-110 active:scale-[0.97] disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
         >
           <span className="material-symbols-outlined text-xl">search</span>
           Explore
@@ -677,7 +679,7 @@ export default function NeighborhoodMode() {
                     </span>
                     Health Indicators
                   </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                  <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
                     {GAUGE_INDICATORS.map((key) => {
                       const indicatorSummary = summary?.indicators[key];
                       return (

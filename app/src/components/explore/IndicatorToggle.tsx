@@ -14,7 +14,7 @@ export default function IndicatorToggle({
 }: IndicatorToggleProps) {
   return (
     <div
-      className="absolute top-4 right-4 bg-white rounded-xl shadow-lg border border-aph-light-gray/50 px-1 py-1"
+      className="absolute top-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-auto max-w-xs bg-white rounded-xl shadow-lg border border-aph-light-gray/50 px-1 py-1"
       style={{ zIndex: 1000 }}
     >
       <label className="block px-3 pt-1.5 pb-1 text-[11px] font-semibold uppercase tracking-wide text-aph-dark-gray">

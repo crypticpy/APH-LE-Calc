@@ -82,7 +82,7 @@ export default function CompareMode() {
 
       {/* Empty state */}
       {selectedZctas.length === 0 && (
-        <div className="bg-white rounded-xl shadow-sm p-12 text-center">
+        <div className="bg-white rounded-xl shadow-sm p-6 sm:p-12 text-center">
           <span className="material-symbols-outlined text-5xl text-aph-blue/40 mb-4 block">
             compare_arrows
           </span>

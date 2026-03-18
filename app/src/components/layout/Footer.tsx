@@ -12,7 +12,7 @@ export default function Footer() {
               outcomes may vary.
             </p>
           </div>
-          <div className="text-right">
+          <div className="text-left md:text-right">
             <p className="font-semibold text-white mb-1">Data Sources</p>
             <p>Life Expectancy: CDC USALEEP (2010-2015)</p>
             <p>Poverty & Insurance: ACS 5-Year (2022)</p>

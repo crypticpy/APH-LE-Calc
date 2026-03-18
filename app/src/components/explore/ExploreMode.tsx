@@ -36,8 +36,8 @@ export default function ExploreMode() {
 
   return (
     <div
-      className="relative overflow-hidden"
-      style={{ height: "calc(100vh - 8rem)" }}
+      className="relative overflow-hidden flex-1"
+      style={{ height: "calc(100dvh - 8rem)", minHeight: "300px" }}
     >
       {/* Full-bleed map */}
       <ChoroplethMap

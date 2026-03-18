@@ -28,8 +28,8 @@ export default function MapLegend({ indicator, min, max }: MapLegendProps) {
 
   return (
     <div
-      className="absolute bottom-6 left-4 bg-white rounded-xl shadow-lg border border-aph-light-gray/50 px-4 py-3"
-      style={{ zIndex: 1000, minWidth: 200 }}
+      className="absolute bottom-6 left-4 right-4 sm:right-auto sm:min-w-[200px] bg-white rounded-xl shadow-lg border border-aph-light-gray/50 px-4 py-3"
+      style={{ zIndex: 1000 }}
     >
       <p className="text-xs font-semibold text-aph-dark-blue mb-2">
         {INDICATOR_LABELS[indicator]}

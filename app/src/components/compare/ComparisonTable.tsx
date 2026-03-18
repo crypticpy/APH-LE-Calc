@@ -58,18 +58,21 @@ export default function ComparisonTable({
   const countyAvg = healthData.meta.countyAverage;
 
   return (
-    <div className="w-full bg-white rounded-xl shadow-sm p-6 overflow-x-auto">
+    <div className="w-full bg-white rounded-xl shadow-sm p-4 sm:p-6 overflow-x-auto">
       <h3 className="text-lg font-semibold text-aph-dark-blue mb-4">
         Side-by-Side Comparison
       </h3>
-      <table className="w-full text-sm font-geist">
+      <table className="w-full text-sm font-geist min-w-[400px]">
         <thead>
           <tr className="border-b-2 border-aph-dark-blue/20">
-            <th className="text-left py-3 px-4 text-aph-dark-blue font-semibold">
+            <th className="text-left py-3 px-2 sm:px-4 text-aph-dark-blue font-semibold">
               Indicator
             </th>
             {zctas.map((zcta, index) => (
-              <th key={zcta} className="text-center py-3 px-4 font-semibold">
+              <th
+                key={zcta}
+                className="text-center py-3 px-2 sm:px-4 font-semibold"
+              >
                 <span
                   className="inline-flex items-center gap-1.5"
                   style={{ color: colors[index] }}
@@ -82,7 +85,7 @@ export default function ComparisonTable({
                 </span>
               </th>
             ))}
-            <th className="text-center py-3 px-4 text-aph-dark-blue font-semibold">
+            <th className="text-center py-3 px-2 sm:px-4 text-aph-dark-blue font-semibold whitespace-nowrap">
               County Avg
             </th>
           </tr>
@@ -99,7 +102,7 @@ export default function ComparisonTable({
                 key={key}
                 className="border-b border-aph-light-gray/40 hover:bg-aph-light-blue/20 transition-colors"
               >
-                <td className="py-3 px-4 text-aph-dark-blue font-medium">
+                <td className="py-3 px-2 sm:px-4 text-aph-dark-blue font-medium whitespace-nowrap">
                   {INDICATOR_LABELS[key]}
                 </td>
                 {zctas.map((zcta, index) => {
@@ -123,7 +126,7 @@ export default function ComparisonTable({
                   return (
                     <td
                       key={zcta}
-                      className="text-center py-3 px-4 font-medium"
+                      className="text-center py-3 px-2 sm:px-4 font-medium"
                       style={{ backgroundColor: bgColor, color: textColor }}
                     >
                       {val !== null ? (
@@ -134,7 +137,7 @@ export default function ComparisonTable({
                     </td>
                   );
                 })}
-                <td className="text-center py-3 px-4 text-aph-dark-gray font-medium">
+                <td className="text-center py-3 px-2 sm:px-4 text-aph-dark-gray font-medium">
                   {formatValue(countyAvg[key], unit)}
                 </td>
               </tr>

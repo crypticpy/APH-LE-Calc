@@ -169,8 +169,9 @@ function Card({ zcta, onClose, children }: CardProps) {
         className="
           fixed md:absolute
           bottom-0 left-0 right-0
+          max-h-[70vh] md:max-h-[calc(100%-2rem)]
           md:bottom-auto md:left-auto md:top-4 md:right-4
-          md:w-80 md:max-h-[calc(100%-2rem)]
+          md:w-80
           bg-white rounded-t-2xl md:rounded-xl shadow-2xl
           overflow-y-auto
           animate-slide-up md:animate-slide-left
