@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Austin Health Pulse – Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --aph-teal: #009F4D;
+    --aph-blue: #44499C;
+    --aph-dark: #1a1f2e;
+    --aph-light: #f5f7f2;
+    --aph-card: #ffffff;
+    --aph-border: rgba(0,0,0,0.08);
+    --aph-muted: #6b7280;
+    --good: #009F4D;
+    --warn: #f59e0b;
+    --bad: #e05240;
+    --neutral: #44499C;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--aph-light); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+  .header {
+    background: var(--aph-dark);
+    padding: 18px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-mark {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--aph-teal), var(--aph-blue));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Serif Display', serif; color: white; font-size: 18px;
+  }
+  .logo-text { color: white; }
+  .logo-text .name { font-family: 'DM Serif Display', serif; font-size: 18px; letter-spacing: -0.3px; }
+  .logo-text .sub { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.05em; text-transform: uppercase; }
+  .header-note { font-size: 12px; color: rgba(255,255,255,0.4); }
+
+  .hero {
+    background: var(--aph-dark);
+    padding: 40px 28px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 60% 0%, rgba(0,159,77,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 10% 100%, rgba(68,73,156,0.2) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px; color: white;
+    margin-bottom: 8px; position: relative;
+  }
+  .hero p { color: rgba(255,255,255,0.55); font-size: 14px; margin-bottom: 28px; position: relative; }
+  .search-bar {
+    display: flex; gap: 0; max-width: 460px; margin: 0 auto;
+    position: relative; z-index: 1;
+  }
+  .search-bar input {
+    flex: 1; padding: 14px 20px; font-size: 20px; font-family: 'DM Sans', sans-serif;
+    font-weight: 500; letter-spacing: 2px;
+    border: none; border-radius: 12px 0 0 12px;
+    background: white; color: var(--aph-dark);
+    outline: none;
+  }
+  .search-bar input::placeholder { color: #ccc; letter-spacing: 1px; font-size: 16px; font-weight: 300; }
+  .search-btn {
+    padding: 14px 24px; background: var(--aph-teal); color: white;
+    border: none; border-radius: 0 12px 12px 0; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+  .search-btn:hover { background: #008743; }
+
+  .main { padding: 0 28px 40px; max-width: 980px; margin: 0 auto; }
+
+  .zip-header {
+    display: flex; align-items: center; gap: 16px;
+    margin: -20px 0 24px;
+    background: white; border-radius: 14px;
+    padding: 18px 24px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    border: 0.5px solid var(--aph-border);
+  }
+  .zip-badge {
+    background: linear-gradient(135deg, var(--aph-teal), var(--aph-blue));
+    color: white; border-radius: 10px; padding: 8px 16px;
+    font-size: 22px; font-weight: 500; letter-spacing: 2px;
+    font-family: 'DM Serif Display', serif;
+  }
+  .zip-info h2 { font-size: 17px; color: var(--aph-dark); font-weight: 500; }
+  .zip-info p { font-size: 12px; color: var(--aph-muted); margin-top: 2px; }
+  .overall-score { margin-left: auto; text-align: right; }
+  .overall-score .score-num {
+    font-family: 'DM Serif Display', serif; font-size: 36px;
+    color: var(--warn); line-height: 1;
+  }
+  .overall-score .score-label { font-size: 11px; color: var(--aph-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .overall-score .score-tag {
+    display: inline-block; font-size: 11px; font-weight: 500;
+    padding: 2px 10px; border-radius: 20px; margin-top: 4px;
+    background: #fef3c7; color: #92400e;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px; color: var(--aph-dark);
+    margin: 28px 0 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 0.5px; background: var(--aph-border);
+  }
+
+  .le-card {
+    background: white; border-radius: 14px; padding: 22px 24px;
+    border: 0.5px solid var(--aph-border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    display: flex; align-items: center; gap: 28px; margin-bottom: 16px;
+  }
+  .le-main { flex: 1; }
+  .le-num {
+    font-family: 'DM Serif Display', serif; font-size: 52px;
+    color: var(--warn); line-height: 1; margin-bottom: 4px;
+  }
+  .le-num span { font-size: 20px; color: var(--aph-muted); }
+  .le-label { font-size: 13px; color: var(--aph-muted); }
+  .le-compare {
+    background: var(--aph-light); border-radius: 10px;
+    padding: 14px 20px; text-align: center; min-width: 140px;
+  }
+  .le-compare .val { font-size: 22px; font-weight: 500; color: var(--aph-dark); }
+  .le-compare .lbl { font-size: 11px; color: var(--aph-muted); margin-top: 2px; }
+  .le-bar-wrap { flex: 2; }
+  .le-bar-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--aph-muted); margin-bottom: 6px; }
+  .le-bar-track { background: #e5e7eb; border-radius: 4px; height: 10px; position: relative; }
+  .le-bar-fill { height: 100%; border-radius: 4px; background: var(--warn); width: 68%; }
+  .le-bar-county { position: absolute; top: -4px; width: 2px; height: 18px; background: var(--aph-blue); left: 78%; }
+  .le-bar-county::after { content: 'County avg'; position: absolute; top: 20px; left: -24px; font-size: 10px; color: var(--aph-blue); white-space: nowrap; }
+
+  .indicator-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  }
+  .ind-card {
+    background: white; border-radius: 12px; padding: 16px 18px;
+    border: 0.5px solid var(--aph-border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .ind-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+  .ind-icon { font-size: 20px; }
+  .ind-status { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 20px; }
+  .status-good { background: #d1fae5; color: #065f46; }
+  .status-warn { background: #fef3c7; color: #92400e; }
+  .status-bad  { background: #fee2e2; color: #991b1b; }
+  .ind-val { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--aph-dark); line-height: 1; }
+  .ind-val span { font-size: 14px; color: var(--aph-muted); font-family: 'DM Sans', sans-serif; }
+  .ind-name { font-size: 11px; color: var(--aph-muted); margin-top: 4px; }
+  .ind-compare { font-size: 11px; margin-top: 6px; color: var(--aph-muted); }
+  .ind-compare strong { color: var(--bad); }
+  .ind-compare.pos strong { color: var(--good); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .env-card {
+    background: white; border-radius: 12px; padding: 18px 20px;
+    border: 0.5px solid var(--aph-border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .env-card h4 { font-size: 12px; font-weight: 500; color: var(--aph-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px; }
+  .env-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .env-row:last-child { margin-bottom: 0; }
+  .env-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .env-name { font-size: 13px; color: var(--aph-dark); flex: 1; }
+  .env-score { font-size: 13px; font-weight: 500; }
+  .env-bar { flex: 2; background: #e5e7eb; border-radius: 4px; height: 5px; }
+  .env-bar-fill { height: 100%; border-radius: 4px; }
+
+  .comm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .comm-item {
+    background: var(--aph-light); border-radius: 8px; padding: 10px 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .comm-item .ci-icon { font-size: 18px; }
+  .comm-item .ci-text { font-size: 12px; color: var(--aph-dark); line-height: 1.4; }
+  .comm-item .ci-text strong { display: block; font-weight: 500; }
+
+  .footnote { font-size: 11px; color: var(--aph-muted); text-align: center; margin-top: 28px; line-height: 1.7; }
+  .footnote a { color: var(--aph-teal); text-decoration: none; }
+
+  /* Design note banner */
+  .design-note {
+    background: #fffbeb; border: 1px dashed #f59e0b;
+    border-radius: 8px; padding: 10px 16px; margin-bottom: 20px;
+    font-size: 12px; color: #92400e; text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">
+    <div class="logo-mark">A</div>
+    <div class="logo-text">
+      <div class="name">Austin Health Pulse</div>
+      <div class="sub">Austin Public Health · Travis County</div>
+    </div>
+  </div>
+  <div class="header-note">Data updated monthly</div>
+</div>
+
+<div class="hero">
+  <h1>Check Your Neighborhood</h1>
+  <p>Enter a ZIP code to explore health, environment, and community data for your area of Travis County</p>
+  <div class="search-bar">
+    <input type="text" value="78744" maxlength="5" placeholder="Enter ZIP code…">
+    <button class="search-btn">Explore →</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="design-note">
+    🎨 Design Mockup — Data shown for ZIP 78744 is illustrative. Built with APH brand colors for the Austin Health Pulse app.
+  </div>
+
+  <div class="zip-header">
+    <div class="zip-badge">78744</div>
+    <div class="zip-info">
+      <h2>Onion Creek / Slaughter Lane</h2>
+      <p>Southeast Austin · Travis County · ~42,000 residents</p>
+    </div>
+    <div class="overall-score">
+      <div class="score-num">62</div>
+      <div class="score-label">Health Score</div>
+      <div class="score-tag">Below County Avg</div>
+    </div>
+  </div>
+
+  <div class="section-title">Life Expectancy</div>
+  <div class="le-card">
+    <div class="le-main">
+      <div class="le-num">74.2 <span>years</span></div>
+      <div class="le-label">Estimated life expectancy at birth · CDC USALEEP</div>
+    </div>
+    <div class="le-bar-wrap">
+      <div class="le-bar-label"><span>65 yrs</span><span>County avg: 79.1</span><span>85 yrs</span></div>
+      <div class="le-bar-track">
+        <div class="le-bar-fill"></div>
+        <div class="le-bar-county"></div>
+      </div>
+      <div style="margin-top:20px; font-size:12px; color:#6b7280;">This ZIP is <strong style="color:#e05240;">4.9 years below</strong> the Travis County average of 79.1 years</div>
+    </div>
+    <div class="le-compare">
+      <div class="val">79.1</div>
+      <div class="lbl">County Average</div>
+      <div style="margin-top:8px; padding-top:8px; border-top:0.5px solid #e5e7eb;">
+        <div class="val" style="color:var(--aph-teal)">83.4</div>
+        <div class="lbl">Highest in County<br>(78746)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Health Indicators</div>
+  <div class="indicator-grid">
+    <div class="ind-card">
+      <div class="ind-top"><span class="ind-icon">🩺</span><span class="ind-status status-bad">High</span></div>
+      <div class="ind-val">18.4<span>%</span></div>
+      <div class="ind-name">Diabetes prevalence</div>
+      <div class="ind-compare"><strong>+6.1%</strong> above county avg (12.3%)</div>
+    </div>
+    <div class="ind-card">
+      <div class="ind-top"><span class="ind-icon">❤️</span><span class="ind-status status-warn">Elevated</span></div>
+      <div class="ind-val">38.2<span>%</span></div>
+      <div class="ind-name">High blood pressure</div>
+      <div class="ind-compare"><strong>+4.8%</strong> above county avg (33.4%)</div>
+    </div>
+    <div class="ind-card">
+      <div class="ind-top"><span class="ind-icon">🫁</span><span class="ind-status status-warn">Elevated</span></div>
+      <div class="ind-val">11.2<span>%</span></div>
+      <div class="ind-name">Asthma prevalence</div>
+      <div class="ind-compare"><strong>+2.4%</strong> above county avg (8.8%)</div>
+    </div>
+    <div class="ind-card">
+      <div class="ind-top"><span class="ind-icon">🚬</span><span class="ind-status status-bad">High</span></div>
+      <div class="ind-val">22.1<span>%</span></div>
+      <div class="ind-name">Current smokers</div>
+      <div class="ind-compare"><strong>+8.2%</strong> above county avg (13.9%)</div>
+    </div>
+    <div class="ind-card">
+      <div class="ind-top"><span class="ind-icon">🏃</span><span class="ind-status status-bad">High</span></div>
+      <div class="ind-val">34.7<span>%</span></div>
+      <div class="ind-name">Physical inactivity</div>
+      <div class="ind-compare"><strong>+9.3%</strong> above county avg (25.4%)</div>
+    </div>
+    <div class="ind-card">
+      <div class="ind-top"><span class="ind-icon">🏥</span><span class="ind-status status-bad">High</span></div>
+      <div class="ind-val">24.6<span>%</span></div>
+      <div class="ind-name">Uninsured rate</div>
+      <div class="ind-compare"><strong>+13.4%</strong> above county avg (11.2%)</div>
+    </div>
+  </div>
+
+  <div class="section-title">Environment &amp; Economy</div>
+  <div class="two-col">
+    <div class="env-card">
+      <h4>Environmental Factors</h4>
+      <div class="env-row">
+        <div class="env-dot" style="background:#f59e0b"></div>
+        <div class="env-name">Air Quality (AQI)</div>
+        <div class="env-bar"><div class="env-bar-fill" style="width:52%;background:#f59e0b"></div></div>
+        <div class="env-score" style="color:#f59e0b">Moderate</div>
+      </div>
+      <div class="env-row">
+        <div class="env-dot" style="background:#e05240"></div>
+        <div class="env-name">Heat Island Exposure</div>
+        <div class="env-bar"><div class="env-bar-fill" style="width:78%;background:#e05240"></div></div>
+        <div class="env-score" style="color:#e05240">High</div>
+      </div>
+      <div class="env-row">
+        <div class="env-dot" style="background:#e05240"></div>
+        <div class="env-name">Walkability Score</div>
+        <div class="env-bar"><div class="env-bar-fill" style="width:28%;background:#e05240"></div></div>
+        <div class="env-score" style="color:#e05240">28 / 100</div>
+      </div>
+      <div class="env-row">
+        <div class="env-dot" style="background:#f59e0b"></div>
+        <div class="env-name">Tree Canopy Cover</div>
+        <div class="env-bar"><div class="env-bar-fill" style="width:22%;background:#f59e0b"></div></div>
+        <div class="env-score" style="color:#f59e0b">22%</div>
+      </div>
+      <div class="env-row">
+        <div class="env-dot" style="background:#e05240"></div>
+        <div class="env-name">Flood Risk</div>
+        <div class="env-bar"><div class="env-bar-fill" style="width:65%;background:#e05240"></div></div>
+        <div class="env-score" style="color:#e05240">Zone AE</div>
+      </div>
+    </div>
+    <div class="env-card">
+      <h4>Economic Factors</h4>
+      <div class="env-row">
+        <div class="env-dot" style="background:#e05240"></div>
+        <div class="env-name">Poverty Rate</div>
+        <div class="env-bar"><div class="env-bar-fill" style="width:68%;background:#e05240"></div></div>
+        <div class="env-score" style="color:#e05240">28.4%</div>
+      </div>
+      <div class="env-row">
+        <div class="env-dot" style="background:#e05240"></div>
+        <div class="env-name">Unemployment</div>
+        <div class="env-bar"><div class="env-bar-fill" style="width:55%;background:#e05240"></div></div>
+        <div class="env-score" style="color:#e05240">8.1%</div>
+      </div>
+      <div class="env-row">
+        <div class="env-dot" style="background:#f59e0b"></div>
+        <div class="env-name">Median Home Value</div>
+        <div class="env-bar"><div class="env-bar-fill" style="width:35%;background:#f59e0b"></div></div>
+        <div class="env-score" style="color:#f59e0b">$347K</div>
+      </div>
+      <div class="env-row">
+        <div class="env-dot" style="background:#e05240"></div>
+        <div class="env-name">Food Desert Status</div>
+        <div class="env-bar"><div class="env-bar-fill" style="width:80%;background:#e05240"></div></div>
+        <div class="env-score" style="color:#e05240">Yes</div>
+      </div>
+      <div class="env-row">
+        <div class="env-dot" style="background:#e05240"></div>
+        <div class="env-name">No Broadband Access</div>
+        <div class="env-bar"><div class="env-bar-fill" style="width:44%;background:#e05240"></div></div>
+        <div class="env-score" style="color:#e05240">18.2%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Community Resources</div>
+  <div class="env-card" style="margin-bottom:0">
+    <div class="comm-grid">
+      <div class="comm-item">
+        <div class="ci-icon">🏥</div>
+        <div class="ci-text"><strong>2 Health Centers</strong>Near this ZIP (HRSA)</div>
+      </div>
+      <div class="comm-item">
+        <div class="ci-icon">🌳</div>
+        <div class="ci-text"><strong>4 Parks</strong>Within 1 mile</div>
+      </div>
+      <div class="comm-item">
+        <div class="ci-icon">📚</div>
+        <div class="ci-text"><strong>1 Library Branch</strong>Southeast Austin Branch</div>
+      </div>
+      <div class="comm-item">
+        <div class="ci-icon">🚌</div>
+        <div class="ci-text"><strong>Limited Transit</strong>3 bus routes, low frequency</div>
+      </div>
+      <div class="comm-item">
+        <div class="ci-icon">🛒</div>
+        <div class="ci-text"><strong>Low Food Access</strong>Nearest store: 1.8 mi</div>
+      </div>
+      <div class="comm-item">
+        <div class="ci-icon">🏫</div>
+        <div class="ci-text"><strong>6 Schools</strong>AISD campuses in ZIP</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    Data sources: CDC PLACES · CDC USALEEP · ACS 5-Year Estimates · AirNow / EPA AQS · FEMA · USDA FARA · HRSA · Austin Open Data Portal<br>
+    Austin Public Health · <a href="https://data.austintexas.gov">data.austintexas.gov</a> · For health emergencies call 311 or visit <a href="https://austintexas.gov/health">austintexas.gov/health</a>
+  </div>
+
+</div>
+</body>
+</html>
