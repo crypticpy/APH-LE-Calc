@@ -396,7 +396,7 @@ export default function NeighborhoodMode({
           >
             auto_awesome
           </span>
-          <span>Built in ~12 hours by APH IT</span>
+          <span>Built by APH for the community</span>
           <span className="text-aph-blue/40">·</span>
           <span className="text-aph-blue group-hover:underline">See how</span>
           <span
