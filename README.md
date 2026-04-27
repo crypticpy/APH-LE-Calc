@@ -26,7 +26,7 @@ This entire prototype — Python data pipeline, three interactive modes, choropl
 | **Hours**            | 3 × 4-hr sessions   | 250-400 hours                    |
 | **Approximate cost** | ~$1.5K loaded staff | $50K-$100K (blended $175-250/hr) |
 
-A leave-behind proof of concept demonstrating that AI-assisted development can compress data-product timelines from months to days, allowing public-sector teams to prototype, iterate, and gather stakeholder feedback before committing to full production builds. See the in-app **About → How This Was Built** panel for the per-session breakdown.
+This project demonstrates how AI-assisted development can compress data-product timelines from months to days, enabling public-sector teams to prototype quickly, validate ideas with the community, and inform decisions about full production builds. See the in-app **About → How This Was Built** panel for the per-session breakdown.
 
 ---
 
@@ -65,7 +65,7 @@ After 5 minutes of inactivity (auto-disabled on mobile and via `?kiosk=off`), an
 
 ### About panel — methodology + build story
 
-A modal (centered on desktop, full-screen sheet on mobile) covers data sources, methodology, limitations, a per-session **build timeline**, and the **agency-cost comparison** that is the headline message for commissioners.
+A modal (centered on desktop, full-screen sheet on mobile) covers data sources, methodology, limitations, a per-session **build timeline**, and an **agency-cost comparison** that contextualizes the development effort.
 
 ---
 
