@@ -73,14 +73,14 @@
     "violentCrimeRate": {
       "min": 0.0,
       "max": 23.36,
-      "avg": 2.31,
-      "median": 0.88,
-      "p25": 0.04,
-      "p75": 2.88,
+      "avg": 3.19,
+      "median": 1.79,
+      "p25": 0.71,
+      "p75": 4.65,
       "unit": "per1k",
       "higherIsBetter": false
     }
   },
   "totalZctas": 63,
-  "zctasWithCompleteData": 61
+  "zctasWithCompleteData": 44
 }

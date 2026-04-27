@@ -19,7 +19,7 @@
       "hypertension": 27.13,
       "obesity": 31.25,
       "asthma": 9.36,
-      "violentCrimeRate": 2.31
+      "violentCrimeRate": 3.19
     }
   },
   "zctas": {
@@ -32,7 +32,7 @@
       "hypertension": 28.5,
       "obesity": 34.5,
       "asthma": 9.2,
-      "violentCrimeRate": 0.04,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 77.64,
@@ -79,7 +79,7 @@
           "se": 3.52
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78613": {
       "lifeExpectancy": 80.5,
@@ -90,7 +90,7 @@
       "hypertension": 27.7,
       "obesity": 31.2,
       "asthma": 9.2,
-      "violentCrimeRate": 0.0,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 80.5,
@@ -137,7 +137,7 @@
           "se": 3.24
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78617": {
       "lifeExpectancy": 76.92,
@@ -206,7 +206,7 @@
       "hypertension": 32.4,
       "obesity": 31.7,
       "asthma": 9.4,
-      "violentCrimeRate": 0.0,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.72,
@@ -253,7 +253,7 @@
           "se": 1.81
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78621": {
       "lifeExpectancy": 78.68,
@@ -264,7 +264,7 @@
       "hypertension": 34.5,
       "obesity": 39.6,
       "asthma": 9.9,
-      "violentCrimeRate": 0.03,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 78.68,
@@ -311,7 +311,7 @@
           "se": 2.89
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78634": {
       "lifeExpectancy": 79.48,
@@ -322,7 +322,7 @@
       "hypertension": 27.1,
       "obesity": 35.3,
       "asthma": 9.7,
-      "violentCrimeRate": 0.0,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.48,
@@ -369,7 +369,7 @@
           "se": 3.99
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78640": {
       "lifeExpectancy": 78.15,
@@ -380,7 +380,7 @@
       "hypertension": 28.5,
       "obesity": 36.8,
       "asthma": 9.2,
-      "violentCrimeRate": 0.0,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 78.15,
@@ -427,7 +427,7 @@
           "se": 3.76
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78641": {
       "lifeExpectancy": 78.51,
@@ -438,7 +438,7 @@
       "hypertension": 27.8,
       "obesity": 32.3,
       "asthma": 9.4,
-      "violentCrimeRate": 0.0,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 78.51,
@@ -485,7 +485,7 @@
           "se": 3.66
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78642": {
       "lifeExpectancy": 79.61,
@@ -496,7 +496,7 @@
       "hypertension": 29.5,
       "obesity": 33.4,
       "asthma": 9.8,
-      "violentCrimeRate": 0.0,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.61,
@@ -543,7 +543,7 @@
           "se": 3.42
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78644": {
       "lifeExpectancy": 77.83,
@@ -554,7 +554,7 @@
       "hypertension": 35.2,
       "obesity": 42.0,
       "asthma": 9.8,
-      "violentCrimeRate": 0.0,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 77.83,
@@ -601,7 +601,7 @@
           "se": 2.53
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78645": {
       "lifeExpectancy": 80.84,
@@ -612,7 +612,7 @@
       "hypertension": 34.2,
       "obesity": 30.3,
       "asthma": 9.8,
-      "violentCrimeRate": 0.0,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 80.84,
@@ -659,7 +659,7 @@
           "se": 3.23
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78646": {
       "lifeExpectancy": null,
@@ -902,7 +902,7 @@
       "hypertension": 29.0,
       "obesity": 35.7,
       "asthma": 9.7,
-      "violentCrimeRate": 0.02,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 77.25,
@@ -949,7 +949,7 @@
           "se": 2.78
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78669": {
       "lifeExpectancy": 80.43,
@@ -960,7 +960,7 @@
       "hypertension": 33.4,
       "obesity": 29.6,
       "asthma": 9.5,
-      "violentCrimeRate": 0.0,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 80.43,
@@ -1007,7 +1007,7 @@
           "se": 2.37
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78676": {
       "lifeExpectancy": 79.42,
@@ -1018,7 +1018,7 @@
       "hypertension": 39.7,
       "obesity": 33.4,
       "asthma": 9.7,
-      "violentCrimeRate": 0.0,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.42,
@@ -1065,7 +1065,7 @@
           "se": 1.19
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78681": {
       "lifeExpectancy": 79.24,
@@ -1076,7 +1076,7 @@
       "hypertension": 28.7,
       "obesity": 31.7,
       "asthma": 9.1,
-      "violentCrimeRate": 0.0,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.24,
@@ -1123,7 +1123,7 @@
           "se": 2.81
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78701": {
       "lifeExpectancy": 76.75,
@@ -1482,7 +1482,7 @@
       "hypertension": 24.4,
       "obesity": 28.1,
       "asthma": 8.4,
-      "violentCrimeRate": 0.0,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 80.65,
@@ -1529,7 +1529,7 @@
           "se": 3.32
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78719": {
       "lifeExpectancy": 83.97,
@@ -2062,7 +2062,7 @@
       "hypertension": 25.0,
       "obesity": 31.1,
       "asthma": 9.1,
-      "violentCrimeRate": 0.18,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.6,
@@ -2109,7 +2109,7 @@
           "se": 2.81
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78730": {
       "lifeExpectancy": 83.16,
@@ -2526,7 +2526,7 @@
       "hypertension": 31.0,
       "obesity": 30.3,
       "asthma": 9.2,
-      "violentCrimeRate": 0.07,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": 80.8,
@@ -2573,7 +2573,7 @@
           "se": 3.48
         }
       },
-      "dataQuality": "complete"
+      "dataQuality": "partial"
     },
     "78738": {
       "lifeExpectancy": 82.65,

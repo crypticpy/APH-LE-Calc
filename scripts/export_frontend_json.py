@@ -563,6 +563,53 @@ VIOLENT_UCR_CATEGORIES = ("09A", "11A", "11B", "11C", "120", "13A")
 # Number of months back to count for the rolling rate window.
 CRIME_WINDOW_MONTHS = 12
 
+# APD only patrols inside City of Austin city limits — Cedar Park, Round Rock,
+# Lakeway, etc. have their own PDs and are absent from APD's feed. To avoid
+# painting those ZCTAs as "0 violent crime," we treat APD's jurisdiction as
+# the set of 2020 tracts where APD has reported *any* UCR incident over the
+# last few years and null out ZCTAs that are mostly outside that footprint.
+JURISDICTION_LOOKBACK_YEARS = 2
+JURISDICTION_COVERAGE_THRESHOLD = 0.5
+
+
+def fetch_apd_jurisdiction_tracts(today: datetime.date) -> set[str]:
+    """
+    Approximate APD's jurisdiction footprint by collecting every 2020 tract
+    where APD has reported *any* incident over the last few years. This
+    distinguishes "APD reported zero violent crimes here" from "APD doesn't
+    police this area."
+    """
+    url = "https://data.austintexas.gov/resource/fdj4-gpfu.json"
+    cutoff = today - datetime.timedelta(days=365 * JURISDICTION_LOOKBACK_YEARS)
+    params = {
+        "$select": "census_block_group",
+        "$where": (
+            f"census_block_group IS NOT NULL "
+            f"AND occ_date > '{cutoff.isoformat()}'"
+        ),
+        "$group": "census_block_group",
+        "$limit": 50000,
+    }
+    try:
+        r = requests.get(url, params=params, timeout=120)
+        r.raise_for_status()
+        records = r.json()
+    except requests.RequestException as e:
+        print(f"      WARNING: jurisdiction probe failed: {e}")
+        return set()
+
+    tracts: set[str] = set()
+    for rec in records:
+        bg = rec.get("census_block_group")
+        if not bg:
+            continue
+        s = str(bg)
+        full = s if (s.startswith("48") and len(s) >= 12) else "48" + s.zfill(10)
+        tract = full[:11]
+        if tract.startswith("48453"):
+            tracts.add(tract)
+    return tracts
+
 
 def pull_violent_crime(xwalk_2020, acs_df):
     """
@@ -584,6 +631,14 @@ def pull_violent_crime(xwalk_2020, acs_df):
     today = datetime.date.today()
     cutoff = today - datetime.timedelta(days=int(CRIME_WINDOW_MONTHS * 30.5))
     cutoff_str = cutoff.isoformat()
+
+    # Build APD's jurisdiction footprint up-front so we can null out ZCTAs
+    # that fall mostly outside it (e.g. Cedar Park, Round Rock, Lakeway).
+    served_tracts = fetch_apd_jurisdiction_tracts(today)
+    print(
+        f"      APD jurisdiction footprint: {len(served_tracts)} tracts "
+        f"(any incident in last {JURISDICTION_LOOKBACK_YEARS}y)."
+    )
 
     cat_list = ",".join(f"'{c}'" for c in VIOLENT_UCR_CATEGORIES)
     params = {
@@ -648,9 +703,31 @@ def pull_violent_crime(xwalk_2020, acs_df):
     merged["incidents"] = merged["incidents"].fillna(0)
     merged["weighted"] = merged["incidents"] * merged["res_ratio"]
 
+    # Per-ZCTA APD coverage: fraction of the ZCTA's tract-area that lies in
+    # APD-served tracts. Used to suppress rates for ZCTAs that are mostly
+    # outside Austin city limits (Round Rock, Cedar Park, Lakeway, etc.).
+    if served_tracts:
+        merged["served"] = merged["GEOID_TRACT"].isin(served_tracts)
+        merged["served_ratio"] = merged["res_ratio"] * merged["served"].astype(int)
+        coverage = (
+            merged.groupby("ZCTA")
+            .apply(
+                lambda g: (
+                    g["served_ratio"].sum() / g["res_ratio"].sum()
+                    if g["res_ratio"].sum() > 0
+                    else 0.0
+                ),
+                include_groups=False,
+            )
+            .to_dict()
+        )
+    else:
+        coverage = {}
+
     by_zcta = (
         merged.groupby("ZCTA")["weighted"].sum().reset_index(name="incidents")
     )
+    by_zcta["coverage"] = by_zcta["ZCTA"].map(coverage).fillna(0.0)
 
     # Normalize per 1,000 residents using ACS population.
     pop_lookup = (
@@ -664,14 +741,16 @@ def pull_violent_crime(xwalk_2020, acs_df):
     # high "rates" that dominate the choropleth color scale.
     MIN_POP_FOR_RATE = 1000
 
-    def rate_for(z, count):
+    def rate_for(z, count, cov):
+        if served_tracts and cov < JURISDICTION_COVERAGE_THRESHOLD:
+            return np.nan
         pop = pop_lookup.get(z) if pop_lookup is not None else None
         if pop is None or pd.isna(pop) or pop < MIN_POP_FOR_RATE:
             return np.nan
         return round((count / pop) * 1000, 2)
 
     by_zcta["violentCrimeRate"] = by_zcta.apply(
-        lambda r: rate_for(r["ZCTA"], r["incidents"]), axis=1
+        lambda r: rate_for(r["ZCTA"], r["incidents"], r["coverage"]), axis=1
     )
 
     result = pd.DataFrame({"ZCTA": TRAVIS_COUNTY_ZCTAS}).merge(
