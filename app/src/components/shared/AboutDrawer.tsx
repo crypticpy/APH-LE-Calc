@@ -201,12 +201,8 @@ export default function AboutDrawer({ isOpen, onClose }: AboutDrawerProps) {
             {/* How this was built */}
             <Section title="How This Was Built">
               <p>
-                Built by APH IT staff using AI-assisted development (Claude) in
-                three focused sessions of about four hours each — roughly{" "}
-                <span className="font-semibold text-aph-dark-blue">
-                  12 hours of internal development time
-                </span>
-                .
+                Built by APH staff using modern development tools including AI
+                agents like Claude, across three focused sessions.
               </p>
 
               {/* Timeline */}
@@ -214,21 +210,18 @@ export default function AboutDrawer({ isOpen, onClose }: AboutDrawerProps) {
                 <TimelineEntry
                   icon="database"
                   label="Session 1"
-                  hours="~4 hrs"
                   title="Data foundation"
                   detail="Pulled USALEEP, ACS, and CDC PLACES data; built the Python pipeline that joins census tracts to ZIP codes; rendered the first interactive Travis County map."
                 />
                 <TimelineEntry
                   icon="dashboard"
                   label="Session 2"
-                  hours="~4 hrs"
                   title="Three audience modes"
                   detail="Added the policy-maker explorer, neighborhood lookup, and indicator gauges; wired up geolocation and ZIP search; computed the county comparisons."
                 />
                 <TimelineEntry
                   icon="auto_awesome"
                   label="Session 3"
-                  hours="~4 hrs"
                   title="Calculators & demo polish"
                   detail="Added the smoking-impact and generations calculators; built the kiosk showcase mode; tightened mobile responsiveness; added this About panel."
                 />
@@ -391,13 +384,11 @@ function LimitationItem({ children }: { children: React.ReactNode }) {
 function TimelineEntry({
   icon,
   label,
-  hours,
   title,
   detail,
 }: {
   icon: string;
   label: string;
-  hours: string;
   title: string;
   detail: string;
 }) {
@@ -414,10 +405,6 @@ function TimelineEntry({
         <div className="flex items-baseline gap-2 flex-wrap">
           <span className="text-[10px] font-bold uppercase tracking-wider text-aph-blue">
             {label}
-          </span>
-          <span className="text-[10px] text-aph-dark-gray">·</span>
-          <span className="text-[10px] font-semibold text-aph-dark-gray">
-            {hours}
           </span>
         </div>
         <p className="text-sm font-semibold text-aph-dark-blue leading-tight mt-0.5">
