@@ -112,8 +112,10 @@ export default function GaugeChart({
       x: cx + r * Math.cos(endAngle),
       y: cy - r * Math.sin(endAngle),
     };
-    const largeArc = clamped > 0.5 ? 1 : 0;
-    return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 1 ${end.x} ${end.y}`;
+    // largeArc is always 0 for a semicircle gauge — the arc never exceeds 180°,
+    // and setting largeArc=1 forces SVG to draw the LONG way around (through
+    // the bottom of the circle), which produces a broken-looking arc.
+    return `M ${start.x} ${start.y} A ${r} ${r} 0 0 1 ${end.x} ${end.y}`;
   }
 
   const fillColor =
