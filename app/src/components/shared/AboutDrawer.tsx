@@ -201,8 +201,9 @@ export default function AboutDrawer({ isOpen, onClose }: AboutDrawerProps) {
             {/* How this was built */}
             <Section title="How This Was Built">
               <p>
-                Built by APH staff using modern development tools including AI
-                agents like Claude, across three focused sessions.
+                Built by APH IT staff using modern development tools such as
+                Claude Code and Copilot, across three focused sessions of about
+                four hours each.
               </p>
 
               {/* Timeline */}
