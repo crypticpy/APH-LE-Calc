@@ -388,20 +388,20 @@ export default function NeighborhoodMode({
         </p>
         <button
           onClick={onAboutClick}
-          className="group mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-aph-dark-blue to-aph-blue text-white text-sm font-semibold shadow-md hover:shadow-lg hover:brightness-110 active:scale-[0.98] transition cursor-pointer"
+          className="group mt-4 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-aph-light-blue/60 hover:bg-aph-light-blue text-aph-dark-blue text-xs font-semibold border border-aph-blue/20 hover:border-aph-blue/40 transition cursor-pointer"
         >
           <span
             className="material-symbols-outlined text-aph-green"
-            style={{ fontSize: "18px" }}
+            style={{ fontSize: "14px" }}
           >
             auto_awesome
           </span>
           <span>Built in ~12 hours by APH IT</span>
-          <span className="text-white/60 mx-0.5">·</span>
-          <span className="text-aph-green group-hover:underline">See how</span>
+          <span className="text-aph-blue/40">·</span>
+          <span className="text-aph-blue group-hover:underline">See how</span>
           <span
-            className="material-symbols-outlined transition-transform group-hover:translate-x-0.5"
-            style={{ fontSize: "16px" }}
+            className="material-symbols-outlined text-aph-blue transition-transform group-hover:translate-x-0.5"
+            style={{ fontSize: "14px" }}
           >
             arrow_forward
           </span>

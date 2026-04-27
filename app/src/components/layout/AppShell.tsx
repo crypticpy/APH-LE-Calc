@@ -99,18 +99,23 @@ export default function AppShell() {
       </main>
       <Footer />
 
-      {/* Floating tour button */}
+      {/* Floating tour button — icon-only on mobile, labeled pill on desktop */}
       <button
         onClick={openTour}
-        className={`fixed bottom-5 right-5 group z-40 flex items-center gap-2 pl-3 pr-4 py-2.5 rounded-full bg-aph-blue text-white shadow-lg hover:brightness-110 active:scale-[0.97] transition ${
+        className={`fixed right-4 sm:right-5 group flex items-center justify-center gap-2 sm:pl-3 sm:pr-4 py-2.5 rounded-full bg-aph-blue text-white shadow-lg hover:brightness-110 active:scale-[0.97] transition w-12 h-12 sm:w-auto sm:h-auto ${
           !hasSeenTour ? "ring-4 ring-aph-blue/30" : ""
         }`}
         aria-label="Take a 60-second tour"
         title="Take a 60-second tour"
-        style={{ zIndex: 1500 }}
+        style={{
+          zIndex: 1500,
+          bottom: "max(1rem, env(safe-area-inset-bottom))",
+        }}
       >
         <span className="material-symbols-outlined text-xl">tour</span>
-        <span className="text-sm font-semibold">60-second tour</span>
+        <span className="hidden sm:inline text-sm font-semibold">
+          60-second tour
+        </span>
       </button>
 
       <AboutDrawer isOpen={aboutOpen} onClose={() => setAboutOpen(false)} />

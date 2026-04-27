@@ -84,9 +84,9 @@ export default function DisparityStrip({ highlightZip }: DisparityStripProps) {
       </div>
 
       {/* Bar strip */}
-      <div className="relative">
+      <div className="relative pt-7">
         <div
-          className="flex items-end gap-[2px] h-20 sm:h-24"
+          className="flex items-end gap-0 sm:gap-[2px] h-24 sm:h-28"
           role="img"
           aria-label={`Sorted bar chart of ${bars.length} ZIP codes by life expectancy. ${highlightZip} ranks ${
             highlightIndex >= 0 ? highlightIndex + 1 : "unknown"
@@ -110,13 +110,13 @@ export default function DisparityStrip({ highlightZip }: DisparityStripProps) {
                     : undefined,
                   outlineOffset: isHighlight ? "1px" : undefined,
                   zIndex: isHighlight ? 2 : 1,
-                  opacity: isHighlight ? 1 : 0.85,
+                  opacity: isHighlight ? 1 : 0.9,
                 }}
                 title={`${b.zip}: ${b.le.toFixed(1)} yrs`}
               >
                 {isHighlight && (
                   <div
-                    className="absolute -top-7 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded text-[10px] font-bold text-white whitespace-nowrap shadow"
+                    className="absolute -top-7 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded text-[10px] font-bold text-white whitespace-nowrap shadow z-10"
                     style={{ backgroundColor: APH_COLORS.darkBlue }}
                   >
                     {b.zip}
