@@ -78,3 +78,27 @@ body {
 .zcta-tooltip::before {
   border-top-color: white !important;
 }
+
+/* Permanent value label rendered at the center of each ZCTA polygon. The
+   transparent background + dark text shadow keeps the number readable on
+   any choropleth color without a heavy chip behind it. */
+.zcta-value-label {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  font-family: var(--font-geist) !important;
+  text-shadow:
+    0 0 3px rgba(0, 0, 0, 0.85),
+    0 0 2px rgba(0, 0, 0, 0.85),
+    0 1px 2px rgba(0, 0, 0, 0.7) !important;
+  pointer-events: none !important;
+  white-space: nowrap !important;
+}
+
+.zcta-value-label::before {
+  display: none !important;
+}

@@ -131,13 +131,26 @@ export default function ChoroplethMap({
         }
       }
 
-      // Tooltip
-      (layer as L.Path).bindTooltip(
+      // Permanent value label rendered at the polygon center — the at-a-glance
+      // number for the currently mapped indicator. Empty string when no data
+      // so we don't render an empty box.
+      if (value !== null && value !== undefined) {
+        (layer as L.Path).bindTooltip(formatted, {
+          permanent: true,
+          direction: "center",
+          className: "zcta-value-label",
+          sticky: false,
+        });
+      }
+
+      // Hover popup with rich info (zip + label + rank). Bound as a popup so
+      // it doesn't conflict with the permanent value tooltip above.
+      (layer as L.Path).bindPopup(
         `<div style="font-family:inherit;font-size:13px;">
           <strong>${zcta}</strong><br/>
           ${label}: ${formatted}${rankLine ? `<br/>${rankLine}` : ""}
         </div>`,
-        { sticky: true, direction: "top", className: "zcta-tooltip" },
+        { closeButton: false, autoPan: false },
       );
 
       // Hover highlight
@@ -198,6 +211,13 @@ export default function ChoroplethMap({
         data={boundaries}
         style={style}
         onEachFeature={onEachFeature}
+      />
+      {/* Place-name labels overlay rendered ABOVE the choropleth so cities and
+          neighborhoods stay readable on top of the colored polygons. */}
+      <TileLayer
+        url="https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png"
+        attribution=""
+        pane="markerPane"
       />
     </MapContainer>
   );
