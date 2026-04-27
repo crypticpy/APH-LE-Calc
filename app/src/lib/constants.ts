@@ -46,7 +46,9 @@ export const AGE_GROUP_RANGES: Array<{
   { key: "85 and older", min: 85, max: 120, label: "85+ years" },
 ];
 
-export const IDLE_TIMEOUT_MS = 60_000; // 60s — conference booth kiosk mode
+export const IDLE_TIMEOUT_MS = 300_000; // 5 min — conference booth kiosk mode
+export const IDLE_DISABLE_MOBILE_BREAKPOINT_PX = 768; // skip kiosk overlay on phones
+export const IDLE_DISABLE_QUERY_FLAG = "kiosk=off"; // ?kiosk=off disables overlay (live demo escape hatch)
 
 export const TRAVIS_COUNTY_ZCTAS = [
   "78610",

@@ -53,10 +53,11 @@ export default function Header({ onInfoClick }: HeaderProps) {
           </nav>
           <button
             onClick={onInfoClick}
-            className="w-9 h-9 rounded-lg flex items-center justify-center text-aph-light-blue hover:bg-white/10 transition-colors"
+            className="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-lg border border-white/25 bg-white/5 text-aph-light-blue text-sm font-semibold hover:bg-white/15 hover:text-white transition-colors"
             aria-label="About this tool"
           >
-            <span className="material-symbols-outlined text-xl">info</span>
+            <span className="material-symbols-outlined text-lg">info</span>
+            <span className="hidden sm:inline">About</span>
           </button>
         </div>
       </div>

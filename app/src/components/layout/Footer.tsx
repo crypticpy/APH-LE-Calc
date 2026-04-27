@@ -17,6 +17,9 @@ export default function Footer() {
             <p>Life Expectancy: CDC USALEEP (2010-2015)</p>
             <p>Poverty & Insurance: ACS 5-Year (2022)</p>
             <p>Chronic Disease: CDC PLACES (2023)</p>
+            <p className="mt-2 text-aph-light-gray">
+              Data current as of March 2026
+            </p>
           </div>
         </div>
       </div>

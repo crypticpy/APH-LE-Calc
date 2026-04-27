@@ -19,6 +19,9 @@ import type {
   CountyAverage,
 } from "../../types/health";
 import GaugeChart from "../shared/GaugeChart";
+import SmokingCalculator from "./SmokingCalculator";
+import ParentsCompare from "./ParentsCompare";
+import DisparityStrip from "./DisparityStrip";
 
 const GAUGE_INDICATORS: IndicatorKey[] = [
   "povertyRate",
@@ -172,7 +175,13 @@ function findZctaForPoint(
   return null;
 }
 
-export default function NeighborhoodMode() {
+interface NeighborhoodModeProps {
+  onAboutClick?: () => void;
+}
+
+export default function NeighborhoodMode({
+  onAboutClick,
+}: NeighborhoodModeProps = {}) {
   const { healthData, summary, boundaries } = useHealthData();
   const navigate = useNavigate();
 
@@ -341,6 +350,23 @@ export default function NeighborhoodMode() {
       ? generateNarrative(submittedZip, zctaData, countyAvg)
       : null;
 
+  // County range — longest- and shortest-LE ZIPs in Travis County
+  const countyRange = useMemo(() => {
+    if (!healthData) return null;
+    let longest: { zip: string; le: number } | null = null;
+    let shortest: { zip: string; le: number } | null = null;
+    for (const [zip, data] of Object.entries(healthData.zctas)) {
+      if (data.lifeExpectancy == null) continue;
+      if (!longest || data.lifeExpectancy > longest.le) {
+        longest = { zip, le: data.lifeExpectancy };
+      }
+      if (!shortest || data.lifeExpectancy < shortest.le) {
+        shortest = { zip, le: data.lifeExpectancy };
+      }
+    }
+    return longest && shortest ? { longest, shortest } : null;
+  }, [healthData]);
+
   // Animated life expectancy — only animate when results are visible
   const animatedLE = useAnimatedNumber(
     showResults && zctaData?.lifeExpectancy != null
@@ -360,6 +386,26 @@ export default function NeighborhoodMode() {
           County. See how life expectancy and health indicators compare to the
           county average.
         </p>
+        <button
+          onClick={onAboutClick}
+          className="group mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-aph-dark-blue to-aph-blue text-white text-sm font-semibold shadow-md hover:shadow-lg hover:brightness-110 active:scale-[0.98] transition cursor-pointer"
+        >
+          <span
+            className="material-symbols-outlined text-aph-green"
+            style={{ fontSize: "18px" }}
+          >
+            auto_awesome
+          </span>
+          <span>Built in ~12 hours by APH IT</span>
+          <span className="text-white/60 mx-0.5">·</span>
+          <span className="text-aph-green group-hover:underline">See how</span>
+          <span
+            className="material-symbols-outlined transition-transform group-hover:translate-x-0.5"
+            style={{ fontSize: "16px" }}
+          >
+            arrow_forward
+          </span>
+        </button>
       </section>
 
       {/* Input Section */}
@@ -658,6 +704,104 @@ export default function NeighborhoodMode() {
                   )}
               </section>
 
+              {/* Disparity hero — the gap number, big */}
+              {hasLifeExpectancy &&
+                countyRange &&
+                submittedZip &&
+                zctaData.lifeExpectancy != null && (
+                  <section
+                    className="mb-6 rounded-2xl shadow-md p-6 md:p-8 text-white relative overflow-hidden"
+                    style={{
+                      background: `linear-gradient(135deg, ${APH_COLORS.darkBlue} 0%, #2c3168 60%, ${APH_COLORS.blue} 100%)`,
+                    }}
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="material-symbols-outlined text-aph-green text-lg">
+                        social_distance
+                      </span>
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-white/80">
+                        The Travis County gap
+                      </h4>
+                    </div>
+                    <div className="flex flex-col md:flex-row md:items-end gap-6">
+                      <div className="md:flex-shrink-0">
+                        <p
+                          className="text-6xl md:text-7xl font-bold leading-none tracking-tight tabular-nums"
+                          style={{ color: APH_COLORS.green }}
+                        >
+                          {(
+                            countyRange.longest.le - countyRange.shortest.le
+                          ).toFixed(1)}
+                        </p>
+                        <p className="text-white/80 text-sm mt-1">
+                          years between Travis County&rsquo;s longest- and
+                          shortest-living ZIPs
+                        </p>
+                      </div>
+                      <div className="flex-1 grid grid-cols-3 gap-3 md:gap-4">
+                        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                          <p className="text-[10px] font-semibold uppercase tracking-wider text-white/70 mb-1">
+                            Longest
+                          </p>
+                          <p className="font-bold text-white text-base">
+                            {countyRange.longest.zip}
+                          </p>
+                          <p
+                            className="text-sm font-semibold"
+                            style={{ color: APH_COLORS.green }}
+                          >
+                            {countyRange.longest.le.toFixed(1)} yrs
+                          </p>
+                        </div>
+                        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                          <p className="text-[10px] font-semibold uppercase tracking-wider text-white/70 mb-1">
+                            Shortest
+                          </p>
+                          <p className="font-bold text-white text-base">
+                            {countyRange.shortest.zip}
+                          </p>
+                          <p
+                            className="text-sm font-semibold"
+                            style={{ color: APH_COLORS.red }}
+                          >
+                            {countyRange.shortest.le.toFixed(1)} yrs
+                          </p>
+                        </div>
+                        <div
+                          className="rounded-lg p-3 border"
+                          style={{
+                            backgroundColor: "rgba(0, 159, 77, 0.15)",
+                            borderColor: "rgba(0, 159, 77, 0.5)",
+                          }}
+                        >
+                          <p className="text-[10px] font-semibold uppercase tracking-wider text-white/70 mb-1">
+                            Your ZIP
+                          </p>
+                          <p className="font-bold text-white text-base">
+                            {submittedZip}
+                          </p>
+                          <p className="text-sm font-semibold text-white">
+                            {submittedZip === countyRange.longest.zip
+                              ? "Top of county"
+                              : submittedZip === countyRange.shortest.zip
+                                ? "Bottom of county"
+                                : `${(countyRange.longest.le - zctaData.lifeExpectancy).toFixed(1)} yrs behind top`}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-xs text-white/70 mt-4 leading-relaxed max-w-3xl">
+                      A gap shaped by income, access to care, environment, and
+                      other social determinants of health.
+                    </p>
+                  </section>
+                )}
+
+              {/* Sorted-bar disparity strip */}
+              {hasLifeExpectancy && submittedZip && (
+                <DisparityStrip highlightZip={submittedZip} />
+              )}
+
               {/* Narrative summary */}
               {narrative && (
                 <section
@@ -715,6 +859,23 @@ export default function NeighborhoodMode() {
           )}
         </div>
       )}
+
+      {/* Personal Factors — always visible, independent of ZIP submission */}
+      <section className="mt-12">
+        <div className="text-center mb-6">
+          <h3 className="text-2xl font-bold text-aph-dark-blue mb-2">
+            How do personal factors affect life expectancy?
+          </h3>
+          <p className="text-sm text-aph-dark-gray max-w-2xl mx-auto">
+            Neighborhood is one factor — personal choices and exposures matter
+            too. Try these calculators to see how.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <SmokingCalculator />
+          <ParentsCompare />
+        </div>
+      </section>
     </div>
   );
 }

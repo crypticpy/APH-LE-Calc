@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useHealthData } from "../../hooks/useHealthData";
 
 const SLIDE_INTERVAL_MS = 8_000;
-const TOTAL_SLIDES = 3;
+const TOTAL_SLIDES = 4;
 
 interface IdleShowcaseProps {
   onDismiss: () => void;
@@ -83,6 +83,75 @@ export default function IdleShowcase({ onDismiss }: IdleShowcaseProps) {
     }
   }
 
+  // Build insights — interesting cross-indicator facts
+  const insights = useMemo(() => {
+    if (!healthData) return [] as { headline: string; detail: string }[];
+    const items: { headline: string; detail: string }[] = [];
+
+    const zctas = Object.entries(healthData.zctas);
+
+    // Diabetes ratio insight
+    let dHigh: { zip: string; v: number } | null = null;
+    let dLow: { zip: string; v: number } | null = null;
+    for (const [zip, d] of zctas) {
+      if (d.diabetes != null) {
+        if (!dHigh || d.diabetes > dHigh.v) dHigh = { zip, v: d.diabetes };
+        if (!dLow || d.diabetes < dLow.v) dLow = { zip, v: d.diabetes };
+      }
+    }
+    if (dHigh && dLow && dLow.v > 0) {
+      const ratio = dHigh.v / dLow.v;
+      if (ratio >= 1.4) {
+        items.push({
+          headline: `Diabetes is ${ratio.toFixed(1)}× more common in ${dHigh.zip} than ${dLow.zip}`,
+          detail: `${dHigh.v.toFixed(1)}% vs ${dLow.v.toFixed(1)}% prevalence — a gap shaped by access to care, food environment, and income.`,
+        });
+      }
+    }
+
+    // Poverty insight
+    let pHigh: { zip: string; v: number } | null = null;
+    for (const [zip, d] of zctas) {
+      if (d.povertyRate != null) {
+        if (!pHigh || d.povertyRate > pHigh.v)
+          pHigh = { zip, v: d.povertyRate };
+      }
+    }
+    const countyPoverty = healthData.meta.countyAverage.povertyRate;
+    if (pHigh && pHigh.v > countyPoverty * 1.5) {
+      items.push({
+        headline: `${pHigh.zip} has ${pHigh.v.toFixed(1)}% poverty`,
+        detail: `That's ${(pHigh.v / countyPoverty).toFixed(1)}× the Travis County average of ${countyPoverty.toFixed(1)}%.`,
+      });
+    }
+
+    // Uninsured insight
+    let uHigh: { zip: string; v: number } | null = null;
+    for (const [zip, d] of zctas) {
+      if (d.uninsuredRate != null) {
+        if (!uHigh || d.uninsuredRate > uHigh.v)
+          uHigh = { zip, v: d.uninsuredRate };
+      }
+    }
+    if (uHigh && uHigh.v >= 20) {
+      items.push({
+        headline: `1 in ${Math.round(100 / uHigh.v)} adults in ${uHigh.zip} is uninsured`,
+        detail: `${uHigh.v.toFixed(1)}% lack health coverage — the highest rate in Travis County.`,
+      });
+    }
+
+    return items;
+  }, [healthData]);
+
+  const [insightIndex, setInsightIndex] = useState(0);
+  useEffect(() => {
+    if (insights.length === 0) return;
+    const id = setInterval(() => {
+      setInsightIndex((i) => (i + 1) % insights.length);
+    }, 4500);
+    return () => clearInterval(id);
+  }, [insights.length]);
+
   return (
     <div
       className="fixed inset-0 flex items-center justify-center"
@@ -116,7 +185,16 @@ export default function IdleShowcase({ onDismiss }: IdleShowcaseProps) {
             lowestZcta={lowestZcta}
           />
         )}
-        {currentSlide === 2 && <SlideCTA />}
+        {currentSlide === 2 &&
+          (insights.length > 0 ? (
+            <SlideInsight
+              headline={insights[insightIndex % insights.length].headline}
+              detail={insights[insightIndex % insights.length].detail}
+            />
+          ) : (
+            <SlideCTA />
+          ))}
+        {currentSlide === 3 && <SlideCTA />}
       </div>
 
       {/* Slide indicators */}
@@ -232,28 +310,68 @@ function SlideStats({
   );
 }
 
+function SlideInsight({
+  headline,
+  detail,
+}: {
+  headline: string;
+  detail: string;
+}) {
+  return (
+    <div className="slide-float">
+      <span className="material-symbols-outlined text-aph-green text-5xl mb-6 block">
+        insights
+      </span>
+      <p className="text-aph-green text-sm font-semibold uppercase tracking-widest mb-4">
+        Did you know?
+      </p>
+      <h2 className="text-3xl md:text-4xl font-bold mb-6 leading-tight max-w-2xl mx-auto">
+        {headline}
+      </h2>
+      <p className="text-lg md:text-xl text-white/85 leading-relaxed max-w-xl mx-auto">
+        {detail}
+      </p>
+    </div>
+  );
+}
+
 function SlideCTA() {
   return (
     <div className="slide-float">
       <span className="material-symbols-outlined text-aph-green text-5xl mb-6 block">
-        touch_app
+        auto_awesome
       </span>
-      <h2 className="text-3xl md:text-4xl font-bold mb-6">
-        Touch to explore your neighborhood
+      <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
+        ~12 hours of internal development.
       </h2>
-      <p className="text-xl text-white/80 mb-10">
-        Scan QR code to view on your phone
+      <p className="text-lg md:text-xl text-white/85 leading-relaxed max-w-xl mx-auto mb-6">
+        APH IT staff built this prototype in three four-hour AI-assisted
+        sessions — work that would typically be a 6-8 week, $50K-$100K agency
+        engagement.
       </p>
-      {/* QR code placeholder */}
-      <div className="w-40 h-40 bg-white rounded-xl flex items-center justify-center mx-auto">
-        <div className="text-center">
-          <span className="material-symbols-outlined text-aph-dark-blue text-4xl">
-            qr_code_2
-          </span>
-          <p className="text-aph-dark-blue text-xs font-semibold mt-1">
-            QR Code
+      <div className="grid grid-cols-2 gap-4 max-w-md mx-auto mb-6">
+        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+          <p className="text-aph-green text-xs font-semibold uppercase tracking-wider mb-1">
+            APH IT
           </p>
+          <p className="text-2xl font-bold">~12 hrs</p>
+          <p className="text-white/60 text-xs mt-0.5">3 × 4-hr sessions</p>
         </div>
+        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+          <p className="text-white/70 text-xs font-semibold uppercase tracking-wider mb-1">
+            Typical agency
+          </p>
+          <p className="text-2xl font-bold">~$60K+</p>
+          <p className="text-white/60 text-xs mt-0.5">6-8 weeks</p>
+        </div>
+      </div>
+      <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/15 backdrop-blur-sm border border-white/20">
+        <span className="material-symbols-outlined text-aph-green text-base">
+          touch_app
+        </span>
+        <span className="text-white text-sm font-semibold">
+          Tap anywhere to explore
+        </span>
       </div>
     </div>
   );
