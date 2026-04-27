@@ -46,6 +46,15 @@ export const AGE_GROUP_RANGES: Array<{
   { key: "85 and older", min: 85, max: 120, label: "85+ years" },
 ];
 
+/**
+ * Base URL for the Austin Service Guide intake page. The lifespan calculator
+ * deep-links into the service guide with `?event=healthspan&focus=<factors>`
+ * so improvement opportunities flow into the resident services intake.
+ * Override locally with `VITE_SERVICE_GUIDE_URL` if running both demos.
+ */
+export const SERVICE_GUIDE_URL =
+  import.meta.env.VITE_SERVICE_GUIDE_URL ?? "http://localhost:5173";
+
 export const IDLE_TIMEOUT_MS = 300_000; // 5 min — conference booth kiosk mode
 export const IDLE_DISABLE_MOBILE_BREAKPOINT_PX = 768; // skip kiosk overlay on phones
 export const IDLE_DISABLE_QUERY_FLAG = "kiosk=off"; // ?kiosk=off disables overlay (live demo escape hatch)

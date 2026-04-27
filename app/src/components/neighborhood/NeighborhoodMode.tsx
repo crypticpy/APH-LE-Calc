@@ -19,7 +19,7 @@ import type {
   CountyAverage,
 } from "../../types/health";
 import GaugeChart from "../shared/GaugeChart";
-import SmokingCalculator from "./SmokingCalculator";
+import LifespanCalculator from "../lifespan/LifespanCalculator";
 import ParentsCompare from "./ParentsCompare";
 import DisparityStrip from "./DisparityStrip";
 
@@ -868,11 +868,11 @@ export default function NeighborhoodMode({
           </h3>
           <p className="text-sm text-aph-dark-gray max-w-2xl mx-auto">
             Neighborhood is one factor — personal choices and exposures matter
-            too. Try these calculators to see how.
+            too. Try these tools to see how.
           </p>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <SmokingCalculator />
+        <LifespanCalculator />
+        <div className="mt-6">
           <ParentsCompare />
         </div>
       </section>
