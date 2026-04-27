@@ -27,6 +27,8 @@ const INDICATORS: IndicatorKey[] = [
   "diabetes",
   "hypertension",
   "obesity",
+  "asthma",
+  "violentCrimeRate",
 ];
 
 export default function ComparisonBarChart({

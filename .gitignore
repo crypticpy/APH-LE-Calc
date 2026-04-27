@@ -21,6 +21,8 @@ app/dist/
 __pycache__/
 *.pyc
 *.pyo
+.venv/
+venv/
 
 # Downloaded data (large files)
 cb_2020_us_zcta520_500k.*

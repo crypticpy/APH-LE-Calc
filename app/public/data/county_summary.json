@@ -59,6 +59,26 @@
       "p75": 33.98,
       "unit": "%",
       "higherIsBetter": false
+    },
+    "asthma": {
+      "min": 8.4,
+      "max": 10.7,
+      "avg": 9.36,
+      "median": 9.4,
+      "p25": 9.1,
+      "p75": 9.6,
+      "unit": "%",
+      "higherIsBetter": false
+    },
+    "violentCrimeRate": {
+      "min": 0.0,
+      "max": 23.36,
+      "avg": 2.31,
+      "median": 0.88,
+      "p25": 0.04,
+      "p75": 2.88,
+      "unit": "per1k",
+      "higherIsBetter": false
     }
   },
   "totalZctas": 63,

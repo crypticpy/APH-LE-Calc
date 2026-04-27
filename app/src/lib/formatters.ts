@@ -2,6 +2,7 @@ export function formatValue(value: number | null, unit: string): string {
   if (value === null) return "N/A";
   if (unit === "years") return value.toFixed(1);
   if (unit === "%") return value.toFixed(1) + "%";
+  if (unit === "per1k") return value.toFixed(1) + " /1k";
   return value.toString();
 }
 
@@ -13,7 +14,10 @@ export function formatDifference(
 ): string {
   const diff = value - countyAvg;
   const sign = diff > 0 ? "+" : "";
-  const formatted = unit === "years" ? diff.toFixed(1) : diff.toFixed(1) + "%";
+  let formatted: string;
+  if (unit === "years") formatted = diff.toFixed(1);
+  else if (unit === "per1k") formatted = diff.toFixed(1) + " /1k";
+  else formatted = diff.toFixed(1) + "%";
   const qualifier = higherIsBetter
     ? diff > 0
       ? "above"

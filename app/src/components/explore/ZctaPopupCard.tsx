@@ -20,6 +20,8 @@ const BAR_INDICATORS: IndicatorKey[] = [
   "diabetes",
   "hypertension",
   "obesity",
+  "asthma",
+  "violentCrimeRate",
 ];
 
 export default function ZctaPopupCard({ zcta, onClose }: ZctaPopupCardProps) {

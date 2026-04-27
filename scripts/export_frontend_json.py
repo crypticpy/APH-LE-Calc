@@ -128,6 +128,14 @@ CENSUS_ZCTA_TRACT_2010_URL = (
     "https://www2.census.gov/geo/docs/maps-data/data/rel/zcta_tract_rel_10.txt"
 )
 
+# 2020 vintage ZCTA-to-Tract crosswalk — needed for current-year datasets like
+# APD crime that geocode against 2020 tract boundaries (which differ from 2010
+# in many places due to tract subdivisions).
+CENSUS_ZCTA_TRACT_2020_URL = (
+    "https://www2.census.gov/geo/docs/maps-data/data/rel2020/zcta520/"
+    "tab20_zcta520_tract20_natl.txt"
+)
+
 
 # ── STEP 1: Load Census 2010 ZCTA-to-Tract Crosswalk ────────────────────────
 
@@ -181,6 +189,61 @@ def load_crosswalk():
     xwalk = xwalk[xwalk["res_ratio"] > 0]
     print(
         f"      Filtered crosswalk: {len(xwalk)} tract-ZCTA mappings for Travis County."
+    )
+    return xwalk[["GEOID_TRACT", "ZCTA", "res_ratio"]]
+
+
+def load_crosswalk_2020():
+    """
+    Download the Census 2020 ZCTA-to-Tract relationship file. Used for
+    aggregating datasets geocoded to 2020 tract boundaries (e.g. APD crime).
+
+    The 2020 file is pipe-delimited and uses different column names than the
+    2010 file: GEOID_TRACT_20, GEOID_ZCTA5_20, AREALAND_PART, AREALAND_TRACT_20.
+    Land-area ratio is used as the weight (population fields aren't included).
+    """
+    print("[1b/7] Downloading Census 2020 ZCTA-to-Tract relationship file...")
+    print(f"       URL: {CENSUS_ZCTA_TRACT_2020_URL}")
+
+    try:
+        r = requests.get(CENSUS_ZCTA_TRACT_2020_URL, timeout=180)
+        r.raise_for_status()
+    except requests.RequestException as e:
+        print(f"       ERROR: Failed to download 2020 crosswalk: {e}")
+        return None
+
+    xwalk = pd.read_csv(io.StringIO(r.text), dtype=str, sep="|")
+    print(f"       Downloaded {len(xwalk)} national 2020 ZCTA-tract pairs.")
+
+    xwalk = xwalk.rename(
+        columns={
+            "GEOID_ZCTA5_20": "ZCTA",
+            "GEOID_TRACT_20": "GEOID_TRACT",
+        }
+    )
+    xwalk["ZCTA"] = xwalk["ZCTA"].astype(str).str.zfill(5)
+    xwalk["GEOID_TRACT"] = xwalk["GEOID_TRACT"].astype(str).str.zfill(11)
+
+    xwalk["AREALAND_PART"] = pd.to_numeric(
+        xwalk.get("AREALAND_PART"), errors="coerce"
+    ).fillna(0)
+    xwalk["AREALAND_TRACT_20"] = pd.to_numeric(
+        xwalk.get("AREALAND_TRACT_20"), errors="coerce"
+    ).fillna(0)
+
+    xwalk = xwalk[xwalk["ZCTA"].isin(TRAVIS_COUNTY_ZCTAS)]
+
+    xwalk["res_ratio"] = xwalk.apply(
+        lambda row: (
+            row["AREALAND_PART"] / row["AREALAND_TRACT_20"]
+            if row["AREALAND_TRACT_20"] > 0
+            else 0
+        ),
+        axis=1,
+    )
+    xwalk = xwalk[xwalk["res_ratio"] > 0]
+    print(
+        f"       Filtered 2020 crosswalk: {len(xwalk)} tract-ZCTA mappings for Travis County."
     )
     return xwalk[["GEOID_TRACT", "ZCTA", "res_ratio"]]
 
@@ -330,42 +393,54 @@ def pull_acs():
 
     base_url = "https://api.census.gov/data/2022/acs/acs5/subject"
 
-    # Query ZCTAs in batches (API limits the number of areas per request)
-    all_rows = []
-    batch_size = 25
-    for i in range(0, len(TRAVIS_COUNTY_ZCTAS), batch_size):
-        batch = TRAVIS_COUNTY_ZCTAS[i : i + batch_size]
-        zcta_list = ",".join(batch)
-        params = {
-            "get": "NAME,S1701_C03_001E,S2701_C05_001E",
-            "for": f"zip code tabulation area:{zcta_list}",
-        }
-        if CENSUS_API_KEY:
-            params["key"] = CENSUS_API_KEY
+    # Query ZCTAs in batches (API limits the number of areas per request).
+    # Pulls poverty + uninsured from the subject tables and total population
+    # (B01003) from the detail tables — population is needed downstream to
+    # normalize crime counts into per-1,000-resident rates.
+    base_detail_url = "https://api.census.gov/data/2022/acs/acs5"
 
-        try:
-            r = requests.get(base_url, params=params, timeout=60)
-            r.raise_for_status()
-            data = r.json()
-            all_rows.extend(data[1:])  # Skip header for subsequent batches
-            if i == 0:
-                header = data[0]
-        except requests.RequestException as e:
-            print(f"      WARNING: ACS batch failed: {e}")
-            continue
+    def batched_pull(url: str, get_vars: str):
+        """Run a paged ZCTA query against an ACS endpoint, return rows + header."""
+        rows: list[list[str]] = []
+        header_out: list[str] = []
+        for i in range(0, len(TRAVIS_COUNTY_ZCTAS), 25):
+            batch = TRAVIS_COUNTY_ZCTAS[i : i + 25]
+            zcta_list = ",".join(batch)
+            params = {
+                "get": get_vars,
+                "for": f"zip code tabulation area:{zcta_list}",
+            }
+            if CENSUS_API_KEY:
+                params["key"] = CENSUS_API_KEY
+            try:
+                r = requests.get(url, params=params, timeout=60)
+                r.raise_for_status()
+                data = r.json()
+                rows.extend(data[1:])
+                if not header_out:
+                    header_out = data[0]
+            except requests.RequestException as e:
+                print(f"      WARNING: ACS batch failed ({url}): {e}")
+                continue
+        return rows, header_out
 
-    if not all_rows:
-        print("      ERROR: All ACS requests failed.")
-        print("      Returning empty ACS data.")
+    subject_rows, subject_header = batched_pull(
+        base_url, "NAME,S1701_C03_001E,S2701_C05_001E"
+    )
+    pop_rows, pop_header = batched_pull(base_detail_url, "NAME,B01003_001E")
+
+    if not subject_rows:
+        print("      ERROR: All ACS subject-table requests failed.")
         return pd.DataFrame(
             {
                 "ZCTA": TRAVIS_COUNTY_ZCTAS,
                 "povertyRate": np.nan,
                 "uninsuredRate": np.nan,
+                "population": np.nan,
             }
         )
 
-    df = pd.DataFrame(all_rows, columns=header)
+    df = pd.DataFrame(subject_rows, columns=subject_header)
     df = df.rename(
         columns={
             "zip code tabulation area": "ZCTA",
@@ -378,10 +453,25 @@ def pull_acs():
         ["ZCTA", "povertyRate", "uninsuredRate"]
     ]
 
-    # Convert to numeric; negative ACS sentinel values -> null
     for col in ["povertyRate", "uninsuredRate"]:
         df[col] = pd.to_numeric(df[col], errors="coerce")
         df.loc[df[col] < 0, col] = np.nan
+
+    if pop_rows:
+        pop_df = pd.DataFrame(pop_rows, columns=pop_header)
+        pop_df = pop_df.rename(
+            columns={
+                "zip code tabulation area": "ZCTA",
+                "B01003_001E": "population",
+            }
+        )
+        pop_df["ZCTA"] = pop_df["ZCTA"].astype(str).str.zfill(5)
+        pop_df["population"] = pd.to_numeric(pop_df["population"], errors="coerce")
+        pop_df.loc[pop_df["population"] < 0, "population"] = np.nan
+        df = df.merge(pop_df[["ZCTA", "population"]], on="ZCTA", how="left")
+    else:
+        print("      WARNING: ACS population query failed; crime rates will be null.")
+        df["population"] = np.nan
 
     print(f"      ACS data retrieved for {len(df)} ZCTAs.")
     return df
@@ -395,19 +485,35 @@ def pull_places():
     Pull CDC PLACES ZCTA-level health outcome data via Socrata API.
     Uses the generic column format (measureid, data_value) and pivots to wide format.
 
-    Returns DataFrame with columns: ZCTA, diabetes, hypertension, obesity
+    Returns DataFrame with columns: ZCTA, diabetes, hypertension, obesity, asthma
     """
-    print("[5/5] Pulling CDC PLACES data (diabetes, hypertension, obesity)...")
+    print("[5/7] Pulling CDC PLACES data (diabetes, hypertension, obesity, asthma)...")
 
     url = "https://data.cdc.gov/resource/qnzd-25i4.csv"
+    measures = ("DIABETES", "BPHIGH", "OBESITY", "CASTHMA")
 
     # Build ZCTA filter for SoQL
     zcta_list = ",".join(f"'{z}'" for z in TRAVIS_COUNTY_ZCTAS)
+    measure_list = ",".join(f"'{m}'" for m in measures)
     params = {
-        "$where": f"locationid IN({zcta_list}) AND measureid IN('DIABETES','BPHIGH','OBESITY') AND datavaluetypeid='CrdPrv'",
+        "$where": (
+            f"locationid IN({zcta_list}) "
+            f"AND measureid IN({measure_list}) "
+            f"AND datavaluetypeid='CrdPrv'"
+        ),
         "$select": "locationid,measureid,data_value",
         "$limit": 5000,
     }
+
+    empty = pd.DataFrame(
+        {
+            "ZCTA": TRAVIS_COUNTY_ZCTAS,
+            "diabetes": np.nan,
+            "hypertension": np.nan,
+            "obesity": np.nan,
+            "asthma": np.nan,
+        }
+    )
 
     try:
         r = requests.get(url, params=params, timeout=60)
@@ -415,26 +521,11 @@ def pull_places():
         df = pd.read_csv(io.StringIO(r.text), dtype={"locationid": str})
     except requests.RequestException as e:
         print(f"      ERROR: Failed to pull CDC PLACES data: {e}")
-        print("      Returning empty PLACES data.")
-        return pd.DataFrame(
-            {
-                "ZCTA": TRAVIS_COUNTY_ZCTAS,
-                "diabetes": np.nan,
-                "hypertension": np.nan,
-                "obesity": np.nan,
-            }
-        )
+        return empty
 
     if df.empty:
         print("      WARNING: CDC PLACES returned no data.")
-        return pd.DataFrame(
-            {
-                "ZCTA": TRAVIS_COUNTY_ZCTAS,
-                "diabetes": np.nan,
-                "hypertension": np.nan,
-                "obesity": np.nan,
-            }
-        )
+        return empty
 
     df["data_value"] = pd.to_numeric(df["data_value"], errors="coerce")
 
@@ -448,17 +539,148 @@ def pull_places():
             "DIABETES": "diabetes",
             "BPHIGH": "hypertension",
             "OBESITY": "obesity",
+            "CASTHMA": "asthma",
         }
     )
     pivot["ZCTA"] = pivot["ZCTA"].astype(str).str.zfill(5)
 
     # Ensure all expected columns exist
-    for col in ["diabetes", "hypertension", "obesity"]:
+    for col in ["diabetes", "hypertension", "obesity", "asthma"]:
         if col not in pivot.columns:
             pivot[col] = np.nan
 
     print(f"      CDC PLACES data retrieved for {len(pivot)} ZCTAs.")
-    return pivot[["ZCTA", "diabetes", "hypertension", "obesity"]]
+    return pivot[["ZCTA", "diabetes", "hypertension", "obesity", "asthma"]]
+
+
+# ── STEP 6: APD Crime Reports → Violent Crime Rate per ZCTA ─────────────────
+
+
+# UCR Part 1 violent offenses (NIBRS group A codes used by APD's `ucr_category` field).
+# Source: FBI UCR / NIBRS — homicide, sex offenses (forcible), robbery, aggravated assault.
+VIOLENT_UCR_CATEGORIES = ("09A", "11A", "11B", "11C", "120", "13A")
+
+# Number of months back to count for the rolling rate window.
+CRIME_WINDOW_MONTHS = 12
+
+
+def pull_violent_crime(xwalk_2020, acs_df):
+    """
+    Pull APD Crime Reports (Socrata fdj4-gpfu), filter to UCR Part 1 violent
+    offenses over the most recent 12-month window, derive census tract from
+    `census_block_group`, aggregate counts to ZCTA via the 2020-vintage
+    land-area-weighted crosswalk (APD geocodes against 2020 tracts), and
+    divide by population (per 1,000 residents).
+
+    Returns DataFrame with columns: ZCTA, violentCrimeRate
+    """
+    print(
+        f"[6/7] Pulling APD violent crime ({CRIME_WINDOW_MONTHS}-month rolling window)..."
+    )
+
+    url = "https://data.austintexas.gov/resource/fdj4-gpfu.json"
+
+    # Rolling window cutoff
+    today = datetime.date.today()
+    cutoff = today - datetime.timedelta(days=int(CRIME_WINDOW_MONTHS * 30.5))
+    cutoff_str = cutoff.isoformat()
+
+    cat_list = ",".join(f"'{c}'" for c in VIOLENT_UCR_CATEGORIES)
+    params = {
+        "$where": (
+            f"ucr_category IN({cat_list}) "
+            f"AND occ_date > '{cutoff_str}' "
+            f"AND census_block_group IS NOT NULL"
+        ),
+        "$select": "census_block_group",
+        "$limit": 50000,
+    }
+
+    empty = pd.DataFrame(
+        {"ZCTA": TRAVIS_COUNTY_ZCTAS, "violentCrimeRate": np.nan}
+    )
+
+    try:
+        r = requests.get(url, params=params, timeout=120)
+        r.raise_for_status()
+        records = r.json()
+    except requests.RequestException as e:
+        print(f"      ERROR: Failed to pull APD crime data: {e}")
+        return empty
+
+    if not records:
+        print("      WARNING: APD returned no violent crime rows.")
+        return empty
+
+    print(f"      Retrieved {len(records)} violent crime incidents since {cutoff_str}.")
+
+    df = pd.DataFrame(records)
+    df = df.dropna(subset=["census_block_group"])
+
+    # APD strips the 2-char state FIPS — values are typically 10 chars
+    # (county+tract+BG). Reconstruct the 12-char GEOID by prepending TX state
+    # FIPS, then take the first 11 chars to get the tract GEOID. Filter out
+    # any rows that don't resolve to Travis County (some are geocoder noise
+    # like "4910204062" pointing at Utah).
+    def to_tract(s: str) -> str:
+        s = str(s)
+        if s.startswith("48") and len(s) >= 12:
+            full = s
+        else:
+            full = "48" + s.zfill(10)
+        return full[:11]
+
+    df["GEOID_TRACT"] = df["census_block_group"].apply(to_tract)
+    df = df[df["GEOID_TRACT"].str.startswith("48453")]
+
+    # Count incidents per tract
+    tract_counts = (
+        df.groupby("GEOID_TRACT").size().reset_index(name="incidents")
+    )
+    tract_counts["GEOID_TRACT"] = (
+        tract_counts["GEOID_TRACT"].astype(str).str.zfill(11)
+    )
+
+    # Distribute tract incidents to ZCTAs via the 2020 land-area crosswalk.
+    # res_ratio = fraction of tract land area in the ZCTA, so weighted
+    # incidents in this ZCTA = incidents * res_ratio.
+    merged = xwalk_2020.merge(tract_counts, on="GEOID_TRACT", how="left")
+    merged["incidents"] = merged["incidents"].fillna(0)
+    merged["weighted"] = merged["incidents"] * merged["res_ratio"]
+
+    by_zcta = (
+        merged.groupby("ZCTA")["weighted"].sum().reset_index(name="incidents")
+    )
+
+    # Normalize per 1,000 residents using ACS population.
+    pop_lookup = (
+        acs_df.set_index("ZCTA")["population"]
+        if "population" in acs_df.columns
+        else None
+    )
+
+    # Suppress rates for very-low-population ZCTAs (e.g. 78712, the UT-Austin
+    # campus ZIP) — small denominators turn a handful of incidents into wildly
+    # high "rates" that dominate the choropleth color scale.
+    MIN_POP_FOR_RATE = 1000
+
+    def rate_for(z, count):
+        pop = pop_lookup.get(z) if pop_lookup is not None else None
+        if pop is None or pd.isna(pop) or pop < MIN_POP_FOR_RATE:
+            return np.nan
+        return round((count / pop) * 1000, 2)
+
+    by_zcta["violentCrimeRate"] = by_zcta.apply(
+        lambda r: rate_for(r["ZCTA"], r["incidents"]), axis=1
+    )
+
+    result = pd.DataFrame({"ZCTA": TRAVIS_COUNTY_ZCTAS}).merge(
+        by_zcta[["ZCTA", "violentCrimeRate"]], on="ZCTA", how="left"
+    )
+    print(
+        f"      Aggregated violent crime rate for {result['violentCrimeRate'].notna().sum()} ZCTAs."
+    )
+    return result
 
 
 # ── HELPERS ──────────────────────────────────────────────────────────────────
@@ -474,19 +696,23 @@ def safe_value(val):
     return val
 
 
+DATA_QUALITY_KEYS = [
+    "lifeExpectancy",
+    "povertyRate",
+    "uninsuredRate",
+    "diabetes",
+    "hypertension",
+    "obesity",
+    "asthma",
+    "violentCrimeRate",
+]
+
+
 def compute_data_quality(record):
-    """Determine data quality based on presence of the 6 main indicators."""
-    main_keys = [
-        "lifeExpectancy",
-        "povertyRate",
-        "uninsuredRate",
-        "diabetes",
-        "hypertension",
-        "obesity",
-    ]
-    values = [record.get(k) for k in main_keys]
+    """Determine data quality based on presence of all main indicators."""
+    values = [record.get(k) for k in DATA_QUALITY_KEYS]
     non_null = sum(1 for v in values if v is not None)
-    if non_null == 6:
+    if non_null == len(DATA_QUALITY_KEYS):
         return "complete"
     elif non_null == 0:
         return "missing"
@@ -526,8 +752,10 @@ def main():
     print("=" * 60)
     print()
 
-    # Load Census crosswalk (needed for USALEEP aggregation)
+    # Load Census crosswalks. 2010 vintage for USALEEP (uses 2010 tracts);
+    # 2020 vintage for APD crime data (geocoded to 2020 tracts).
     xwalk = load_crosswalk()
+    xwalk_2020 = load_crosswalk_2020()
 
     # Load life expectancy data
     le_df = load_life_expectancy(xwalk)
@@ -539,14 +767,24 @@ def main():
     acs_df = pull_acs()
     places_df = pull_places()
 
+    # Pull APD violent crime (uses 2020 crosswalk + ACS population)
+    if xwalk_2020 is not None:
+        crime_df = pull_violent_crime(xwalk_2020, acs_df)
+    else:
+        print("[6/7] SKIP: 2020 crosswalk unavailable; violent crime will be null.")
+        crime_df = pd.DataFrame(
+            {"ZCTA": TRAVIS_COUNTY_ZCTAS, "violentCrimeRate": np.nan}
+        )
+
     print()
-    print("[Export] Building JSON output...")
+    print("[7/7] Building JSON output...")
 
     # Merge all data into a single DataFrame (for county-level stats)
     base = pd.DataFrame({"ZCTA": TRAVIS_COUNTY_ZCTAS})
     merged = base.merge(le_df, on="ZCTA", how="left")
     merged = merged.merge(acs_df, on="ZCTA", how="left")
     merged = merged.merge(places_df, on="ZCTA", how="left")
+    merged = merged.merge(crime_df, on="ZCTA", how="left")
 
     # ── Build zcta_health_data.json ──
 
@@ -561,6 +799,8 @@ def main():
             "diabetes": safe_value(row.get("diabetes")),
             "hypertension": safe_value(row.get("hypertension")),
             "obesity": safe_value(row.get("obesity")),
+            "asthma": safe_value(row.get("asthma")),
+            "violentCrimeRate": safe_value(row.get("violentCrimeRate")),
         }
 
         # Add age-specific data if available
@@ -582,14 +822,7 @@ def main():
 
     # Compute county averages (mean of non-null values)
     county_avg = {}
-    for key in [
-        "lifeExpectancy",
-        "povertyRate",
-        "uninsuredRate",
-        "diabetes",
-        "hypertension",
-        "obesity",
-    ]:
+    for key in DATA_QUALITY_KEYS:
         values = [
             zctas_dict[z][key] for z in zctas_dict if zctas_dict[z][key] is not None
         ]
@@ -605,6 +838,12 @@ def main():
                 "diabetes": "CDC PLACES 2023 (BRFSS model-based)",
                 "hypertension": "CDC PLACES 2023 (BRFSS model-based)",
                 "obesity": "CDC PLACES 2023 (BRFSS model-based)",
+                "asthma": "CDC PLACES 2023 (current asthma, BRFSS model-based)",
+                "violentCrimeRate": (
+                    "City of Austin Open Data Portal — APD Crime Reports "
+                    "(UCR Part 1 violent, rolling 12-month window, "
+                    "tract-aggregated, per 1,000 residents)"
+                ),
             },
             "countyAverage": county_avg,
         },
@@ -622,6 +861,8 @@ def main():
         "diabetes": {"unit": "%", "higherIsBetter": False},
         "hypertension": {"unit": "%", "higherIsBetter": False},
         "obesity": {"unit": "%", "higherIsBetter": False},
+        "asthma": {"unit": "%", "higherIsBetter": False},
+        "violentCrimeRate": {"unit": "per1k", "higherIsBetter": False},
     }
 
     for key, config in indicator_config.items():

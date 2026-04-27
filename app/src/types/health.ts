@@ -24,6 +24,8 @@ export interface ZctaHealthData {
   diabetes: number | null;
   hypertension: number | null;
   obesity: number | null;
+  asthma: number | null;
+  violentCrimeRate: number | null;
   ageSpecific: Record<AgeGroupKey, AgeSpecificData> | null;
   dataQuality: "complete" | "partial" | "missing";
 }
@@ -35,6 +37,8 @@ export interface CountyAverage {
   diabetes: number;
   hypertension: number;
   obesity: number;
+  asthma: number;
+  violentCrimeRate: number;
 }
 
 export interface HealthDataMeta {
@@ -67,6 +71,8 @@ export interface CountySummary {
     diabetes: CountySummaryIndicator;
     hypertension: CountySummaryIndicator;
     obesity: CountySummaryIndicator;
+    asthma: CountySummaryIndicator;
+    violentCrimeRate: CountySummaryIndicator;
   };
   totalZctas: number;
   zctasWithCompleteData: number;
@@ -78,7 +84,9 @@ export type IndicatorKey =
   | "uninsuredRate"
   | "diabetes"
   | "hypertension"
-  | "obesity";
+  | "obesity"
+  | "asthma"
+  | "violentCrimeRate";
 
 export const INDICATOR_LABELS: Record<IndicatorKey, string> = {
   lifeExpectancy: "Life Expectancy",
@@ -87,6 +95,8 @@ export const INDICATOR_LABELS: Record<IndicatorKey, string> = {
   diabetes: "Diabetes Prevalence",
   hypertension: "Hypertension Prevalence",
   obesity: "Obesity Prevalence",
+  asthma: "Current Asthma",
+  violentCrimeRate: "Violent Crime Rate",
 };
 
 export const INDICATOR_UNITS: Record<IndicatorKey, string> = {
@@ -96,6 +106,8 @@ export const INDICATOR_UNITS: Record<IndicatorKey, string> = {
   diabetes: "%",
   hypertension: "%",
   obesity: "%",
+  asthma: "%",
+  violentCrimeRate: "per1k",
 };
 
 export const INDICATOR_HIGHER_IS_BETTER: Record<IndicatorKey, boolean> = {
@@ -105,4 +117,6 @@ export const INDICATOR_HIGHER_IS_BETTER: Record<IndicatorKey, boolean> = {
   diabetes: false,
   hypertension: false,
   obesity: false,
+  asthma: false,
+  violentCrimeRate: false,
 };

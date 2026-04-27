@@ -1,13 +1,15 @@
 {
   "meta": {
-    "generated": "2026-03-18",
+    "generated": "2026-04-27",
     "sources": {
       "lifeExpectancy": "CDC USALEEP (tract-level, pop-weighted to ZCTA)",
       "povertyRate": "ACS 5-Year 2022, Table S1701",
       "uninsuredRate": "ACS 5-Year 2022, Table S2701",
       "diabetes": "CDC PLACES 2023 (BRFSS model-based)",
       "hypertension": "CDC PLACES 2023 (BRFSS model-based)",
-      "obesity": "CDC PLACES 2023 (BRFSS model-based)"
+      "obesity": "CDC PLACES 2023 (BRFSS model-based)",
+      "asthma": "CDC PLACES 2023 (current asthma, BRFSS model-based)",
+      "violentCrimeRate": "City of Austin Open Data Portal \u2014 APD Crime Reports (UCR Part 1 violent, rolling 12-month window, tract-aggregated, per 1,000 residents)"
     },
     "countyAverage": {
       "lifeExpectancy": 79.86,
@@ -15,7 +17,9 @@
       "uninsuredRate": 11.72,
       "diabetes": 9.2,
       "hypertension": 27.13,
-      "obesity": 31.25
+      "obesity": 31.25,
+      "asthma": 9.36,
+      "violentCrimeRate": 2.31
     }
   },
   "zctas": {
@@ -27,6 +31,8 @@
       "diabetes": 10.0,
       "hypertension": 28.5,
       "obesity": 34.5,
+      "asthma": 9.2,
+      "violentCrimeRate": 0.04,
       "ageSpecific": {
         "Under 1": {
           "ex": 77.64,
@@ -83,6 +89,8 @@
       "diabetes": 8.9,
       "hypertension": 27.7,
       "obesity": 31.2,
+      "asthma": 9.2,
+      "violentCrimeRate": 0.0,
       "ageSpecific": {
         "Under 1": {
           "ex": 80.5,
@@ -139,6 +147,8 @@
       "diabetes": 13.5,
       "hypertension": 30.3,
       "obesity": 39.9,
+      "asthma": 9.4,
+      "violentCrimeRate": 1.22,
       "ageSpecific": {
         "Under 1": {
           "ex": 76.92,
@@ -195,6 +205,8 @@
       "diabetes": 10.0,
       "hypertension": 32.4,
       "obesity": 31.7,
+      "asthma": 9.4,
+      "violentCrimeRate": 0.0,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.72,
@@ -251,6 +263,8 @@
       "diabetes": 13.2,
       "hypertension": 34.5,
       "obesity": 39.6,
+      "asthma": 9.9,
+      "violentCrimeRate": 0.03,
       "ageSpecific": {
         "Under 1": {
           "ex": 78.68,
@@ -307,6 +321,8 @@
       "diabetes": 9.0,
       "hypertension": 27.1,
       "obesity": 35.3,
+      "asthma": 9.7,
+      "violentCrimeRate": 0.0,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.48,
@@ -363,6 +379,8 @@
       "diabetes": 10.9,
       "hypertension": 28.5,
       "obesity": 36.8,
+      "asthma": 9.2,
+      "violentCrimeRate": 0.0,
       "ageSpecific": {
         "Under 1": {
           "ex": 78.15,
@@ -419,6 +437,8 @@
       "diabetes": 9.1,
       "hypertension": 27.8,
       "obesity": 32.3,
+      "asthma": 9.4,
+      "violentCrimeRate": 0.0,
       "ageSpecific": {
         "Under 1": {
           "ex": 78.51,
@@ -475,6 +495,8 @@
       "diabetes": 9.3,
       "hypertension": 29.5,
       "obesity": 33.4,
+      "asthma": 9.8,
+      "violentCrimeRate": 0.0,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.61,
@@ -531,6 +553,8 @@
       "diabetes": 14.4,
       "hypertension": 35.2,
       "obesity": 42.0,
+      "asthma": 9.8,
+      "violentCrimeRate": 0.0,
       "ageSpecific": {
         "Under 1": {
           "ex": 77.83,
@@ -587,6 +611,8 @@
       "diabetes": 11.0,
       "hypertension": 34.2,
       "obesity": 30.3,
+      "asthma": 9.8,
+      "violentCrimeRate": 0.0,
       "ageSpecific": {
         "Under 1": {
           "ex": 80.84,
@@ -643,6 +669,8 @@
       "diabetes": null,
       "hypertension": null,
       "obesity": null,
+      "asthma": null,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": null,
@@ -699,6 +727,8 @@
       "diabetes": 9.9,
       "hypertension": 30.3,
       "obesity": 30.2,
+      "asthma": 9.2,
+      "violentCrimeRate": 1.26,
       "ageSpecific": {
         "Under 1": {
           "ex": 77.94,
@@ -755,6 +785,8 @@
       "diabetes": 9.8,
       "hypertension": 26.8,
       "obesity": 34.0,
+      "asthma": 9.6,
+      "violentCrimeRate": 0.71,
       "ageSpecific": {
         "Under 1": {
           "ex": 78.36,
@@ -811,6 +843,8 @@
       "diabetes": 9.1,
       "hypertension": 26.2,
       "obesity": 31.2,
+      "asthma": 9.6,
+      "violentCrimeRate": 0.36,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.98,
@@ -867,6 +901,8 @@
       "diabetes": 10.5,
       "hypertension": 29.0,
       "obesity": 35.7,
+      "asthma": 9.7,
+      "violentCrimeRate": 0.02,
       "ageSpecific": {
         "Under 1": {
           "ex": 77.25,
@@ -923,6 +959,8 @@
       "diabetes": 10.3,
       "hypertension": 33.4,
       "obesity": 29.6,
+      "asthma": 9.5,
+      "violentCrimeRate": 0.0,
       "ageSpecific": {
         "Under 1": {
           "ex": 80.43,
@@ -979,6 +1017,8 @@
       "diabetes": 13.3,
       "hypertension": 39.7,
       "obesity": 33.4,
+      "asthma": 9.7,
+      "violentCrimeRate": 0.0,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.42,
@@ -1035,6 +1075,8 @@
       "diabetes": 9.4,
       "hypertension": 28.7,
       "obesity": 31.7,
+      "asthma": 9.1,
+      "violentCrimeRate": 0.0,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.24,
@@ -1091,6 +1133,8 @@
       "diabetes": 7.7,
       "hypertension": 25.2,
       "obesity": 28.6,
+      "asthma": 9.0,
+      "violentCrimeRate": 23.36,
       "ageSpecific": {
         "Under 1": {
           "ex": 76.75,
@@ -1147,6 +1191,8 @@
       "diabetes": 7.9,
       "hypertension": 23.4,
       "obesity": 31.4,
+      "asthma": 9.5,
+      "violentCrimeRate": 8.18,
       "ageSpecific": {
         "Under 1": {
           "ex": 76.76,
@@ -1203,6 +1249,8 @@
       "diabetes": 6.7,
       "hypertension": 24.4,
       "obesity": 26.1,
+      "asthma": 9.0,
+      "violentCrimeRate": 0.94,
       "ageSpecific": {
         "Under 1": {
           "ex": 82.02,
@@ -1259,6 +1307,8 @@
       "diabetes": 6.0,
       "hypertension": 20.8,
       "obesity": 28.1,
+      "asthma": 9.4,
+      "violentCrimeRate": 4.36,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.05,
@@ -1315,6 +1365,8 @@
       "diabetes": 3.6,
       "hypertension": 15.0,
       "obesity": 26.2,
+      "asthma": 10.7,
+      "violentCrimeRate": 1.96,
       "ageSpecific": {
         "Under 1": {
           "ex": 82.12,
@@ -1371,6 +1423,8 @@
       "diabetes": 11.9,
       "hypertension": 26.7,
       "obesity": 33.9,
+      "asthma": 9.3,
+      "violentCrimeRate": null,
       "ageSpecific": {
         "Under 1": {
           "ex": null,
@@ -1427,6 +1481,8 @@
       "diabetes": 7.9,
       "hypertension": 24.4,
       "obesity": 28.1,
+      "asthma": 8.4,
+      "violentCrimeRate": 0.0,
       "ageSpecific": {
         "Under 1": {
           "ex": 80.65,
@@ -1483,6 +1539,8 @@
       "diabetes": 13.3,
       "hypertension": 29.0,
       "obesity": 36.0,
+      "asthma": 8.9,
+      "violentCrimeRate": 6.24,
       "ageSpecific": {
         "Under 1": {
           "ex": 83.97,
@@ -1539,6 +1597,8 @@
       "diabetes": 10.0,
       "hypertension": 27.8,
       "obesity": 34.0,
+      "asthma": 9.9,
+      "violentCrimeRate": 5.34,
       "ageSpecific": {
         "Under 1": {
           "ex": 75.26,
@@ -1595,6 +1655,8 @@
       "diabetes": 7.2,
       "hypertension": 24.0,
       "obesity": 29.9,
+      "asthma": 9.7,
+      "violentCrimeRate": 5.11,
       "ageSpecific": {
         "Under 1": {
           "ex": 80.45,
@@ -1651,6 +1713,8 @@
       "diabetes": 9.1,
       "hypertension": 26.6,
       "obesity": 32.0,
+      "asthma": 9.6,
+      "violentCrimeRate": 5.24,
       "ageSpecific": {
         "Under 1": {
           "ex": 77.47,
@@ -1707,6 +1771,8 @@
       "diabetes": 11.2,
       "hypertension": 27.7,
       "obesity": 37.0,
+      "asthma": 9.8,
+      "violentCrimeRate": 2.88,
       "ageSpecific": {
         "Under 1": {
           "ex": 75.43,
@@ -1763,6 +1829,8 @@
       "diabetes": 9.3,
       "hypertension": 25.5,
       "obesity": 34.1,
+      "asthma": 9.7,
+      "violentCrimeRate": 1.71,
       "ageSpecific": {
         "Under 1": {
           "ex": 76.68,
@@ -1819,6 +1887,8 @@
       "diabetes": 7.6,
       "hypertension": 24.0,
       "obesity": 27.7,
+      "asthma": 9.2,
+      "violentCrimeRate": 1.88,
       "ageSpecific": {
         "Under 1": {
           "ex": 80.36,
@@ -1875,6 +1945,8 @@
       "diabetes": 7.4,
       "hypertension": 23.7,
       "obesity": 26.8,
+      "asthma": 8.8,
+      "violentCrimeRate": 1.33,
       "ageSpecific": {
         "Under 1": {
           "ex": 80.86,
@@ -1931,6 +2003,8 @@
       "diabetes": 8.3,
       "hypertension": 25.1,
       "obesity": 31.5,
+      "asthma": 9.6,
+      "violentCrimeRate": 0.19,
       "ageSpecific": {
         "Under 1": {
           "ex": 81.6,
@@ -1987,6 +2061,8 @@
       "diabetes": 7.8,
       "hypertension": 25.0,
       "obesity": 31.1,
+      "asthma": 9.1,
+      "violentCrimeRate": 0.18,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.6,
@@ -2043,6 +2119,8 @@
       "diabetes": 7.9,
       "hypertension": 26.5,
       "obesity": 26.7,
+      "asthma": 9.0,
+      "violentCrimeRate": 0.27,
       "ageSpecific": {
         "Under 1": {
           "ex": 83.16,
@@ -2099,6 +2177,8 @@
       "diabetes": 7.7,
       "hypertension": 27.5,
       "obesity": 25.9,
+      "asthma": 8.9,
+      "violentCrimeRate": 0.64,
       "ageSpecific": {
         "Under 1": {
           "ex": 82.33,
@@ -2155,6 +2235,8 @@
       "diabetes": 7.9,
       "hypertension": 26.4,
       "obesity": 26.6,
+      "asthma": 9.1,
+      "violentCrimeRate": 0.04,
       "ageSpecific": {
         "Under 1": {
           "ex": 86.85,
@@ -2211,6 +2293,8 @@
       "diabetes": 8.3,
       "hypertension": 27.4,
       "obesity": 25.8,
+      "asthma": 8.8,
+      "violentCrimeRate": 0.11,
       "ageSpecific": {
         "Under 1": {
           "ex": 81.81,
@@ -2267,6 +2351,8 @@
       "diabetes": 10.0,
       "hypertension": 32.2,
       "obesity": 28.6,
+      "asthma": 9.4,
+      "violentCrimeRate": 0.09,
       "ageSpecific": {
         "Under 1": {
           "ex": 82.11,
@@ -2323,6 +2409,8 @@
       "diabetes": 7.5,
       "hypertension": 25.3,
       "obesity": 27.1,
+      "asthma": 9.1,
+      "violentCrimeRate": 0.97,
       "ageSpecific": {
         "Under 1": {
           "ex": 80.92,
@@ -2379,6 +2467,8 @@
       "diabetes": 8.8,
       "hypertension": 28.2,
       "obesity": 29.0,
+      "asthma": 9.5,
+      "violentCrimeRate": 0.81,
       "ageSpecific": {
         "Under 1": {
           "ex": 81.7,
@@ -2435,6 +2525,8 @@
       "diabetes": 9.3,
       "hypertension": 31.0,
       "obesity": 30.3,
+      "asthma": 9.2,
+      "violentCrimeRate": 0.07,
       "ageSpecific": {
         "Under 1": {
           "ex": 80.8,
@@ -2491,6 +2583,8 @@
       "diabetes": 8.1,
       "hypertension": 27.6,
       "obesity": 26.4,
+      "asthma": 9.0,
+      "violentCrimeRate": 0.0,
       "ageSpecific": {
         "Under 1": {
           "ex": 82.65,
@@ -2547,6 +2641,8 @@
       "diabetes": 7.7,
       "hypertension": 25.9,
       "obesity": 26.3,
+      "asthma": 8.8,
+      "violentCrimeRate": 0.33,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.87,
@@ -2603,6 +2699,8 @@
       "diabetes": 7.8,
       "hypertension": 21.8,
       "obesity": 33.0,
+      "asthma": 9.8,
+      "violentCrimeRate": 8.57,
       "ageSpecific": {
         "Under 1": {
           "ex": 76.86,
@@ -2659,6 +2757,8 @@
       "diabetes": 16.2,
       "hypertension": 33.8,
       "obesity": 41.2,
+      "asthma": 9.9,
+      "violentCrimeRate": 14.41,
       "ageSpecific": {
         "Under 1": {
           "ex": 76.4,
@@ -2715,6 +2815,8 @@
       "diabetes": 10.0,
       "hypertension": 24.5,
       "obesity": 34.6,
+      "asthma": 9.4,
+      "violentCrimeRate": 4.49,
       "ageSpecific": {
         "Under 1": {
           "ex": 77.02,
@@ -2771,6 +2873,8 @@
       "diabetes": 8.5,
       "hypertension": 25.4,
       "obesity": 30.8,
+      "asthma": 9.3,
+      "violentCrimeRate": 3.91,
       "ageSpecific": {
         "Under 1": {
           "ex": 78.59,
@@ -2827,6 +2931,8 @@
       "diabetes": 7.9,
       "hypertension": 27.7,
       "obesity": 25.4,
+      "asthma": 8.9,
+      "violentCrimeRate": 0.71,
       "ageSpecific": {
         "Under 1": {
           "ex": 82.99,
@@ -2883,6 +2989,8 @@
       "diabetes": 9.7,
       "hypertension": 26.1,
       "obesity": 33.2,
+      "asthma": 9.2,
+      "violentCrimeRate": 1.88,
       "ageSpecific": {
         "Under 1": {
           "ex": 81.84,
@@ -2939,6 +3047,8 @@
       "diabetes": 8.1,
       "hypertension": 24.6,
       "obesity": 30.1,
+      "asthma": 9.3,
+      "violentCrimeRate": 1.53,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.71,
@@ -2995,6 +3105,8 @@
       "diabetes": 7.7,
       "hypertension": 25.3,
       "obesity": 27.6,
+      "asthma": 9.1,
+      "violentCrimeRate": 0.88,
       "ageSpecific": {
         "Under 1": {
           "ex": 81.89,
@@ -3051,6 +3163,8 @@
       "diabetes": 8.7,
       "hypertension": 27.8,
       "obesity": 27.9,
+      "asthma": 8.9,
+      "violentCrimeRate": 0.18,
       "ageSpecific": {
         "Under 1": {
           "ex": 81.57,
@@ -3107,6 +3221,8 @@
       "diabetes": 5.1,
       "hypertension": 18.6,
       "obesity": 26.5,
+      "asthma": 9.4,
+      "violentCrimeRate": 3.24,
       "ageSpecific": {
         "Under 1": {
           "ex": 80.08,
@@ -3163,6 +3279,8 @@
       "diabetes": 10.3,
       "hypertension": 26.6,
       "obesity": 35.2,
+      "asthma": 9.6,
+      "violentCrimeRate": 5.55,
       "ageSpecific": {
         "Under 1": {
           "ex": 77.65,
@@ -3219,6 +3337,8 @@
       "diabetes": 11.0,
       "hypertension": 27.3,
       "obesity": 34.7,
+      "asthma": 9.4,
+      "violentCrimeRate": 5.64,
       "ageSpecific": {
         "Under 1": {
           "ex": 79.28,
@@ -3275,6 +3395,8 @@
       "diabetes": 9.4,
       "hypertension": 25.4,
       "obesity": 31.3,
+      "asthma": 9.3,
+      "violentCrimeRate": 2.12,
       "ageSpecific": {
         "Under 1": {
           "ex": 82.9,
@@ -3331,6 +3453,8 @@
       "diabetes": 7.3,
       "hypertension": 24.7,
       "obesity": 29.5,
+      "asthma": 9.6,
+      "violentCrimeRate": 2.73,
       "ageSpecific": {
         "Under 1": {
           "ex": 81.7,
@@ -3387,6 +3511,8 @@
       "diabetes": 7.5,
       "hypertension": 25.0,
       "obesity": 29.0,
+      "asthma": 9.3,
+      "violentCrimeRate": 1.88,
       "ageSpecific": {
         "Under 1": {
           "ex": 80.27,
@@ -3443,6 +3569,8 @@
       "diabetes": 9.6,
       "hypertension": 25.5,
       "obesity": 33.3,
+      "asthma": 9.5,
+      "violentCrimeRate": 5.67,
       "ageSpecific": {
         "Under 1": {
           "ex": 78.47,
@@ -3499,6 +3627,8 @@
       "diabetes": 7.6,
       "hypertension": 25.7,
       "obesity": 26.2,
+      "asthma": 8.8,
+      "violentCrimeRate": 1.65,
       "ageSpecific": {
         "Under 1": {
           "ex": 82.55,

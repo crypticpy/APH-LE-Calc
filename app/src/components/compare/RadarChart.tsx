@@ -25,6 +25,8 @@ const RADAR_INDICATORS: { key: IndicatorKey; shortLabel: string }[] = [
   { key: "diabetes", shortLabel: "Diabetes" },
   { key: "hypertension", shortLabel: "Hypertension" },
   { key: "obesity", shortLabel: "Obesity" },
+  { key: "asthma", shortLabel: "Asthma" },
+  { key: "violentCrimeRate", shortLabel: "Violent Crime" },
 ];
 
 function normalize(
