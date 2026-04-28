@@ -339,38 +339,21 @@ function SlideCTA() {
   return (
     <div className="slide-float">
       <span className="material-symbols-outlined text-aph-green text-5xl mb-6 block">
-        auto_awesome
+        explore
       </span>
       <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
-        ~12 hours of internal development.
+        Explore your neighborhood.
       </h2>
-      <p className="text-lg md:text-xl text-white/85 leading-relaxed max-w-xl mx-auto mb-6">
-        APH IT staff built this prototype in three four-hour AI-assisted
-        sessions — work that would typically be a 6-8 week, $50K-$100K agency
-        engagement.
+      <p className="text-lg md:text-xl text-white/85 leading-relaxed max-w-xl mx-auto mb-8">
+        Look up any Travis County ZIP, compare neighborhoods side by side, or
+        see how modifiable factors shape lifespan.
       </p>
-      <div className="grid grid-cols-2 gap-4 max-w-md mx-auto mb-6">
-        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-          <p className="text-aph-green text-xs font-semibold uppercase tracking-wider mb-1">
-            APH IT
-          </p>
-          <p className="text-2xl font-bold">~12 hrs</p>
-          <p className="text-white/60 text-xs mt-0.5">3 × 4-hr sessions</p>
-        </div>
-        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-          <p className="text-white/70 text-xs font-semibold uppercase tracking-wider mb-1">
-            Typical agency
-          </p>
-          <p className="text-2xl font-bold">~$60K+</p>
-          <p className="text-white/60 text-xs mt-0.5">6-8 weeks</p>
-        </div>
-      </div>
       <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/15 backdrop-blur-sm border border-white/20">
         <span className="material-symbols-outlined text-aph-green text-base">
           touch_app
         </span>
         <span className="text-white text-sm font-semibold">
-          Tap anywhere to explore
+          Tap anywhere to begin
         </span>
       </div>
     </div>
