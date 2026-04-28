@@ -138,15 +138,38 @@ function Slider({
 
 export default function LifespanCalculator() {
   const [inputs, setInputs] = useState<LifespanInputs>(defaultInputs());
-  const [heightFt, setHeightFt] = useState(5);
-  const [heightIn, setHeightIn] = useState(8);
-  const [weightLb, setWeightLb] = useState(160);
+  // Drafts are strings so users can type freely without per-keystroke clamping.
+  const [heightFtDraft, setHeightFtDraft] = useState("5");
+  const [heightInDraft, setHeightInDraft] = useState("8");
+  const [weightLbDraft, setWeightLbDraft] = useState("160");
 
-  // Recompute BMI whenever h/w change.
-  function syncBmi(ft: number, inch: number, lb: number) {
+  function syncBmiFromDrafts(ftStr: string, inchStr: string, lbStr: string) {
+    const ft = Number(ftStr);
+    const inch = Number(inchStr);
+    const lb = Number(lbStr);
+    if (
+      !Number.isFinite(ft) ||
+      !Number.isFinite(inch) ||
+      !Number.isFinite(lb) ||
+      lb <= 0
+    ) {
+      return;
+    }
     const totalIn = ft * 12 + inch;
+    if (totalIn <= 0) return;
     const bmi = bmiFromHeightWeight(totalIn, lb);
     setInputs((prev) => ({ ...prev, bmi: Math.round(bmi * 10) / 10 }));
+  }
+
+  function clampField(
+    value: string,
+    min: number,
+    max: number,
+    fallback: number,
+  ): string {
+    const n = Number(value);
+    const safe = Number.isFinite(n) ? n : fallback;
+    return String(Math.max(min, Math.min(max, safe)));
   }
 
   const result = useMemo(() => computeLifespan(inputs), [inputs]);
@@ -271,16 +294,22 @@ export default function LifespanCalculator() {
                 </label>
                 <input
                   type="number"
+                  inputMode="numeric"
                   min={3}
                   max={8}
-                  value={heightFt}
+                  value={heightFtDraft}
                   onChange={(e) => {
-                    const v = Math.max(
-                      3,
-                      Math.min(8, Number(e.target.value) || 0),
+                    setHeightFtDraft(e.target.value);
+                    syncBmiFromDrafts(
+                      e.target.value,
+                      heightInDraft,
+                      weightLbDraft,
                     );
-                    setHeightFt(v);
-                    syncBmi(v, heightIn, weightLb);
+                  }}
+                  onBlur={(e) => {
+                    const clamped = clampField(e.target.value, 3, 8, 5);
+                    setHeightFtDraft(clamped);
+                    syncBmiFromDrafts(clamped, heightInDraft, weightLbDraft);
                   }}
                   className="w-full px-2 py-1.5 rounded-lg border border-aph-light-gray bg-white text-aph-dark-blue font-semibold focus:outline-none focus:ring-2 focus:ring-aph-blue [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
@@ -291,16 +320,22 @@ export default function LifespanCalculator() {
                 </label>
                 <input
                   type="number"
+                  inputMode="numeric"
                   min={0}
                   max={11}
-                  value={heightIn}
+                  value={heightInDraft}
                   onChange={(e) => {
-                    const v = Math.max(
-                      0,
-                      Math.min(11, Number(e.target.value) || 0),
+                    setHeightInDraft(e.target.value);
+                    syncBmiFromDrafts(
+                      heightFtDraft,
+                      e.target.value,
+                      weightLbDraft,
                     );
-                    setHeightIn(v);
-                    syncBmi(heightFt, v, weightLb);
+                  }}
+                  onBlur={(e) => {
+                    const clamped = clampField(e.target.value, 0, 11, 8);
+                    setHeightInDraft(clamped);
+                    syncBmiFromDrafts(heightFtDraft, clamped, weightLbDraft);
                   }}
                   className="w-full px-2 py-1.5 rounded-lg border border-aph-light-gray bg-white text-aph-dark-blue font-semibold focus:outline-none focus:ring-2 focus:ring-aph-blue [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
@@ -311,16 +346,22 @@ export default function LifespanCalculator() {
                 </label>
                 <input
                   type="number"
+                  inputMode="numeric"
                   min={50}
                   max={500}
-                  value={weightLb}
+                  value={weightLbDraft}
                   onChange={(e) => {
-                    const v = Math.max(
-                      50,
-                      Math.min(500, Number(e.target.value) || 0),
+                    setWeightLbDraft(e.target.value);
+                    syncBmiFromDrafts(
+                      heightFtDraft,
+                      heightInDraft,
+                      e.target.value,
                     );
-                    setWeightLb(v);
-                    syncBmi(heightFt, heightIn, v);
+                  }}
+                  onBlur={(e) => {
+                    const clamped = clampField(e.target.value, 50, 500, 160);
+                    setWeightLbDraft(clamped);
+                    syncBmiFromDrafts(heightFtDraft, heightInDraft, clamped);
                   }}
                   className="w-full px-2 py-1.5 rounded-lg border border-aph-light-gray bg-white text-aph-dark-blue font-semibold focus:outline-none focus:ring-2 focus:ring-aph-blue [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
