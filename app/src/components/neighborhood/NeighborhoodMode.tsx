@@ -809,7 +809,18 @@ export default function NeighborhoodMode({
                   style={{ borderLeft: `4px solid ${APH_COLORS.blue}` }}
                 >
                   <p className="text-sm italic text-aph-dark-blue/85 leading-relaxed">
-                    {narrative}
+                    {narrative.split(/(\d+(?:\.\d+)?%?)/g).map((part, i) =>
+                      /^\d/.test(part) ? (
+                        <strong
+                          key={i}
+                          className="font-bold not-italic text-aph-dark-blue"
+                        >
+                          {part}
+                        </strong>
+                      ) : (
+                        part
+                      ),
+                    )}
                   </p>
                 </section>
               )}
