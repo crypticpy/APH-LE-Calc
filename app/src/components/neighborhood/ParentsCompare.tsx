@@ -105,7 +105,7 @@ export default function ParentsCompare() {
         </div>
       )}
 
-      <p className="text-[11px] text-aph-dark-gray mt-3 leading-relaxed">
+      <p className="text-xs text-aph-dark-gray mt-3 leading-relaxed">
         Historical U.S. life expectancy at birth from CDC NCHS National Vital
         Statistics System. The 2020 dip reflects the COVID-19 pandemic.
       </p>

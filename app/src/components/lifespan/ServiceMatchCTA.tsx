@@ -84,27 +84,27 @@ export default function ServiceMatchCTA({
 
   return (
     <div
-      className="rounded-2xl shadow-md p-6 md:p-7 text-white"
+      className="rounded-2xl shadow-md p-6 md:p-7 text-aph-dark-blue border border-aph-blue/20"
       style={{
-        background: `linear-gradient(135deg, ${APH_COLORS.darkBlue} 0%, ${APH_COLORS.blue} 100%)`,
+        background: "linear-gradient(135deg, #eef4fb 0%, #dceaf6 100%)",
       }}
     >
       <div className="flex items-start gap-3 mb-1">
         <span
           className="material-symbols-outlined"
-          style={{ color: APH_COLORS.green, fontSize: "28px" }}
+          style={{ color: APH_COLORS.darkGreen, fontSize: "28px" }}
         >
           trending_up
         </span>
         <div>
           <h4 className="font-bold text-lg leading-tight">
             Up to{" "}
-            <span style={{ color: APH_COLORS.green }}>
+            <span style={{ color: APH_COLORS.darkGreen }}>
               +{totalGain.toFixed(1)} years
             </span>{" "}
             could be on the table
           </h4>
-          <p className="text-white/80 text-sm mt-1">
+          <p className="text-sm text-aph-dark-blue/80 mt-1">
             Based on your inputs, these are the factors with the most years
             recoverable. Austin Public Health partners with services that can
             help.
@@ -116,12 +116,12 @@ export default function ServiceMatchCTA({
         {opportunities.map((o) => (
           <li
             key={o.factor}
-            className="bg-white/10 rounded-lg px-3 py-2 flex items-center justify-between gap-3"
+            className="bg-white rounded-lg px-3 py-2 flex items-center justify-between gap-3 border border-aph-light-gray/50"
           >
             <span className="inline-flex items-center gap-2 text-sm font-medium">
               <span
                 className="material-symbols-outlined"
-                style={{ fontSize: "18px", color: APH_COLORS.green }}
+                style={{ fontSize: "18px", color: APH_COLORS.blue }}
               >
                 {FACTOR_ICONS[o.factor]}
               </span>
@@ -129,7 +129,7 @@ export default function ServiceMatchCTA({
             </span>
             <span
               className="text-sm font-bold tabular-nums whitespace-nowrap"
-              style={{ color: APH_COLORS.green }}
+              style={{ color: APH_COLORS.darkGreen }}
             >
               +{o.potentialGain.toFixed(1)} yrs
             </span>
@@ -149,7 +149,7 @@ export default function ServiceMatchCTA({
           arrow_forward
         </span>
       </a>
-      <p className="text-[11px] text-white/60 mt-3">
+      <p className="text-xs text-aph-dark-gray mt-3">
         Opens the Austin Service Guide. Your responses on this page are not sent
         — only the factor categories are shared.
       </p>

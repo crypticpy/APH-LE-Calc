@@ -710,16 +710,20 @@ export default function NeighborhoodMode({
                 submittedZip &&
                 zctaData.lifeExpectancy != null && (
                   <section
-                    className="mb-6 rounded-2xl shadow-md p-6 md:p-8 text-white relative overflow-hidden"
+                    className="mb-6 rounded-2xl shadow-md p-6 md:p-8 text-aph-dark-blue border border-aph-blue/20 relative overflow-hidden"
                     style={{
-                      background: `linear-gradient(135deg, ${APH_COLORS.darkBlue} 0%, #2c3168 60%, ${APH_COLORS.blue} 100%)`,
+                      background:
+                        "linear-gradient(135deg, #eef4fb 0%, #dceaf6 100%)",
                     }}
                   >
                     <div className="flex items-center justify-center md:justify-start gap-2 mb-3">
-                      <span className="material-symbols-outlined text-aph-green text-lg">
+                      <span
+                        className="material-symbols-outlined text-lg"
+                        style={{ color: APH_COLORS.darkGreen }}
+                      >
                         social_distance
                       </span>
-                      <h4 className="text-xs font-semibold uppercase tracking-wider text-white/80">
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-aph-dark-blue/75">
                         The Travis County gap
                       </h4>
                     </div>
@@ -727,37 +731,37 @@ export default function NeighborhoodMode({
                       <div className="md:flex-shrink-0 text-center md:text-left">
                         <p
                           className="text-6xl md:text-7xl font-bold leading-none tracking-tight tabular-nums"
-                          style={{ color: APH_COLORS.green }}
+                          style={{ color: APH_COLORS.darkGreen }}
                         >
                           {(
                             countyRange.longest.le - countyRange.shortest.le
                           ).toFixed(1)}
                         </p>
-                        <p className="text-white/80 text-sm mt-1">
+                        <p className="text-aph-dark-blue/80 text-sm mt-1">
                           years between Travis County&rsquo;s longest- and
                           shortest-living ZIPs
                         </p>
                       </div>
                       <div className="flex-1 grid grid-cols-3 gap-3 md:gap-4">
-                        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
-                          <p className="text-[10px] font-semibold uppercase tracking-wider text-white/70 mb-1">
+                        <div className="bg-white rounded-lg p-3 border border-aph-light-gray/50">
+                          <p className="text-xs font-semibold uppercase tracking-wider text-aph-dark-gray mb-1">
                             Longest
                           </p>
-                          <p className="font-bold text-white text-base">
+                          <p className="font-bold text-aph-dark-blue text-base">
                             {countyRange.longest.zip}
                           </p>
                           <p
                             className="text-sm font-semibold"
-                            style={{ color: APH_COLORS.green }}
+                            style={{ color: APH_COLORS.darkGreen }}
                           >
                             {countyRange.longest.le.toFixed(1)} yrs
                           </p>
                         </div>
-                        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
-                          <p className="text-[10px] font-semibold uppercase tracking-wider text-white/70 mb-1">
+                        <div className="bg-white rounded-lg p-3 border border-aph-light-gray/50">
+                          <p className="text-xs font-semibold uppercase tracking-wider text-aph-dark-gray mb-1">
                             Shortest
                           </p>
-                          <p className="font-bold text-white text-base">
+                          <p className="font-bold text-aph-dark-blue text-base">
                             {countyRange.shortest.zip}
                           </p>
                           <p
@@ -770,17 +774,20 @@ export default function NeighborhoodMode({
                         <div
                           className="rounded-lg p-3 border"
                           style={{
-                            backgroundColor: "rgba(0, 159, 77, 0.15)",
-                            borderColor: "rgba(0, 159, 77, 0.5)",
+                            backgroundColor: "rgba(0, 80, 39, 0.08)",
+                            borderColor: "rgba(0, 80, 39, 0.35)",
                           }}
                         >
-                          <p className="text-[10px] font-semibold uppercase tracking-wider text-white/70 mb-1">
+                          <p className="text-xs font-semibold uppercase tracking-wider text-aph-dark-gray mb-1">
                             Your ZIP
                           </p>
-                          <p className="font-bold text-white text-base">
+                          <p className="font-bold text-aph-dark-blue text-base">
                             {submittedZip}
                           </p>
-                          <p className="text-sm font-semibold text-white">
+                          <p
+                            className="text-sm font-semibold"
+                            style={{ color: APH_COLORS.darkGreen }}
+                          >
                             {submittedZip === countyRange.longest.zip
                               ? "Top of county"
                               : submittedZip === countyRange.shortest.zip
@@ -790,7 +797,7 @@ export default function NeighborhoodMode({
                         </div>
                       </div>
                     </div>
-                    <p className="text-xs text-white/70 mt-4 leading-relaxed max-w-3xl">
+                    <p className="text-xs text-aph-dark-blue/70 mt-4 leading-relaxed max-w-3xl">
                       A gap shaped by income, access to care, environment, and
                       other social determinants of health.
                     </p>

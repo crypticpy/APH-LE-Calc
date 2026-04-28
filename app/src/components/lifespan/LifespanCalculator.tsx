@@ -158,7 +158,7 @@ export default function LifespanCalculator() {
   ) => setInputs((prev) => ({ ...prev, [key]: value }));
 
   const totalDeltaColor =
-    result.totalDelta >= 0 ? APH_COLORS.green : APH_COLORS.red;
+    result.totalDelta >= 0 ? APH_COLORS.darkGreen : APH_COLORS.red;
   const projectedAge = Math.round(result.totalLifespan);
 
   return (
@@ -244,7 +244,7 @@ export default function LifespanCalculator() {
               display={`${inputs.exerciseMinutesPerWeek} min`}
               onChange={(v) => update("exerciseMinutesPerWeek", v)}
             />
-            <p className="text-[11px] text-aph-dark-gray mt-1">
+            <p className="text-xs text-aph-dark-gray mt-1">
               WHO recommends ~150 min/week.
             </p>
           </Section>
@@ -258,7 +258,7 @@ export default function LifespanCalculator() {
               display={`${inputs.dietScore} / 5`}
               onChange={(v) => update("dietScore", v as DietScore)}
             />
-            <p className="text-[11px] text-aph-dark-gray mt-1 italic">
+            <p className="text-xs text-aph-dark-gray mt-1 italic">
               {DIET_LABELS[inputs.dietScore]}
             </p>
           </Section>
@@ -326,7 +326,7 @@ export default function LifespanCalculator() {
                 />
               </div>
             </div>
-            <p className="text-[11px] text-aph-dark-gray">
+            <p className="text-xs text-aph-dark-gray">
               BMI {inputs.bmi.toFixed(1)} — {bmiCategory(inputs.bmi)}
             </p>
           </Section>
@@ -352,7 +352,7 @@ export default function LifespanCalculator() {
               display={`${inputs.stressScore} / 5`}
               onChange={(v) => update("stressScore", v as StressScore)}
             />
-            <p className="text-[11px] text-aph-dark-gray mt-1 italic">
+            <p className="text-xs text-aph-dark-gray mt-1 italic">
               {STRESS_LABELS[inputs.stressScore]}
             </p>
           </Section>
@@ -361,32 +361,35 @@ export default function LifespanCalculator() {
         {/* ------------------ Result column ------------------ */}
         <div className="space-y-5">
           <div
-            className="rounded-2xl p-6 text-center text-white"
+            className="rounded-2xl p-6 text-center text-aph-dark-blue border border-aph-blue/20 shadow-sm"
             style={{
-              background: `linear-gradient(135deg, ${APH_COLORS.darkBlue} 0%, ${APH_COLORS.blue} 100%)`,
+              background: "linear-gradient(135deg, #eef4fb 0%, #dceaf6 100%)",
             }}
           >
-            <p className="text-xs font-semibold uppercase tracking-wider text-white/80">
+            <p className="text-xs font-semibold uppercase tracking-wider text-aph-dark-blue/75">
               Estimated lifespan
             </p>
-            <p className="text-6xl font-bold leading-none mt-2 tabular-nums">
+            <p
+              className="text-6xl font-bold leading-none mt-2 tabular-nums"
+              style={{ color: APH_COLORS.darkBlue }}
+            >
               {result.totalLifespan.toFixed(1)}
             </p>
-            <p className="text-white/80 mt-1">years</p>
+            <p className="text-aph-dark-blue/75 mt-1">years</p>
             <div className="grid grid-cols-2 gap-3 mt-5 text-left">
-              <div className="bg-white/10 rounded-lg p-3">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-white/70">
+              <div className="bg-white rounded-lg p-3 border border-aph-light-gray/50">
+                <p className="text-xs font-semibold uppercase tracking-wider text-aph-dark-gray">
                   Years remaining
                 </p>
-                <p className="text-2xl font-bold tabular-nums">
+                <p className="text-2xl font-bold tabular-nums text-aph-dark-blue">
                   {result.remainingYears.toFixed(0)}
                 </p>
-                <p className="text-[11px] text-white/70 mt-0.5">
+                <p className="text-xs text-aph-dark-gray mt-0.5">
                   Reaching about age {projectedAge}
                 </p>
               </div>
-              <div className="bg-white/10 rounded-lg p-3">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-white/70">
+              <div className="bg-white rounded-lg p-3 border border-aph-light-gray/50">
+                <p className="text-xs font-semibold uppercase tracking-wider text-aph-dark-gray">
                   Net adjustment
                 </p>
                 <p
@@ -396,7 +399,7 @@ export default function LifespanCalculator() {
                   {result.totalDelta >= 0 ? "+" : "−"}
                   {Math.abs(result.totalDelta).toFixed(1)}
                 </p>
-                <p className="text-[11px] text-white/70 mt-0.5">
+                <p className="text-xs text-aph-dark-gray mt-0.5">
                   vs. average for your age
                 </p>
               </div>
@@ -414,7 +417,7 @@ export default function LifespanCalculator() {
       </div>
 
       <div className="mt-6 pt-4 border-t border-aph-light-gray/40">
-        <p className="text-[11px] text-aph-dark-gray leading-relaxed">
+        <p className="text-xs text-aph-dark-gray leading-relaxed">
           Estimates combine the U.S. 2022 life table (NCHS) with effect sizes
           from Doll &amp; Peto (BMJ 2004), Lee et al. (Lancet 2012), Fadnes et
           al. (PLoS Med 2022), the Prospective Studies Collaboration (Lancet
