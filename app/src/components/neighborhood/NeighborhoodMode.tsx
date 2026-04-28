@@ -715,7 +715,7 @@ export default function NeighborhoodMode({
                       background: `linear-gradient(135deg, ${APH_COLORS.darkBlue} 0%, #2c3168 60%, ${APH_COLORS.blue} 100%)`,
                     }}
                   >
-                    <div className="flex items-center gap-2 mb-3">
+                    <div className="flex items-center justify-center md:justify-start gap-2 mb-3">
                       <span className="material-symbols-outlined text-aph-green text-lg">
                         social_distance
                       </span>
@@ -724,7 +724,7 @@ export default function NeighborhoodMode({
                       </h4>
                     </div>
                     <div className="flex flex-col md:flex-row md:items-end gap-6">
-                      <div className="md:flex-shrink-0">
+                      <div className="md:flex-shrink-0 text-center md:text-left">
                         <p
                           className="text-6xl md:text-7xl font-bold leading-none tracking-tight tabular-nums"
                           style={{ color: APH_COLORS.green }}
